@@ -15,7 +15,7 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::all();
-        $products = Product::latest()->paginate(5); 
+        $products = Product::latest()->paginate(5);
         return view('product.index', compact('products'));
     }
 
@@ -24,7 +24,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $categories = Category::all(); 
+        $categories = Category::all();
         return view('product.create', compact('categories'));
     }
 
@@ -35,32 +35,46 @@ class ProductController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'images.*' => 'required|image|max:2048',
             'description' => 'required',
             'unit_price' => 'required',
             'category_id' => 'required',
         ]);
-   
+
+        $imagePaths = [];
+
+        foreach ($request->file('images') as $image) {
+            $imageName = basename($image->getClientOriginalName());
+
+            if (!file_exists(public_path('imgs') . '/' . $imageName)) {
+                $image->move(public_path('imgs'), $imageName);
+            }
+
+            $imagePaths[] = 'imgs/' . $imageName;
+        }
+
+
         $product = new Product;
         $product->name = $request->name;
+        $product->image = implode(',', $imagePaths);
         $product->description = $request->description;
         $product->unit_price = $request->unit_price;
         $product->category_id = $request->category_id;
-   
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = time().'.'.$image->extension();
-            $image->move(public_path('productImages'), $imageName);
-            $product->image = $imageName;
-        } else {
-            // Handle case where no image is uploaded
-            // You can set a default image or leave it blank depending on your requirements
-            // For example:
-            $product->image = 'default_image.jpg';
-        }
-     
+
+        // if ($request->hasFile('image')) {
+        //     $image = $request->file('image');
+        //     $imageName = time().'.'.$image->extension();
+        //     $image->move(public_path('productImages'), $imageName);
+        //     $product->image = $imageName;
+        // } else {
+        //     // Handle case where no image is uploaded
+        //     // You can set a default image or leave it blank depending on your requirements
+        //     // For example:
+        //     $product->image = 'default_image.jpg';
+        // }
+
         $product->save();
-    
+
         return redirect()->route('product.index')->with('success','Product created successfully.');
     }
 
@@ -79,7 +93,7 @@ class ProductController extends Controller
     public function edit($product_id)
     {
         $product = Product::find($product_id);
-        $categories = Category::all(); 
+        $categories = Category::all();
 
         return view('product.edit', compact('product', 'categories'));
     }
@@ -91,30 +105,31 @@ class ProductController extends Controller
     {
         $request->validate([
             'name' => 'required',
+            'images.*' => 'required|image|max:2048',
             'description' => 'required',
             'unit_price' => 'required',
             'category_id' => 'required'
         ]);
-    
+
+        $imagePaths = [];
+
+        foreach ($request->file('images') as $image) {
+            $imageName = basename($image->getClientOriginalName());
+
+            if (!file_exists(public_path('imgs') . '/' . $imageName)) {
+                $image->move(public_path('imgs'), $imageName);
+            }
+
+            $imagePaths[] = 'imgs/' . $imageName;
+        }
+
+
         $product->name = $request->name;
+        $product->image = implode(',', $imagePaths);
         $product->description = $request->description;
         $product->unit_price = $request->unit_price;
-        $product->category_id = $request->category_id;
-    
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = time() . '.' . $image->extension();
-            $image->move(public_path('productImages'), $imageName);
-    
-            if ($product->image && file_exists(public_path('productImages/' . $product->image))) {
-                unlink(public_path('productImages/' . $product->image));
-            }
-    
-            $product->image = $imageName;
-        }
-    
         $product->save();
-    
+
         return redirect()->route('product.index')->with('success', 'Product updated successfully');
     }
 
@@ -128,4 +143,6 @@ class ProductController extends Controller
         // Product::destroy($product_id);
         // return redirect()->route('product.index')->with('success', 'Product deleted successfully');
     }
+
+
 }

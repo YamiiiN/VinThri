@@ -7,9 +7,9 @@
 </head>
 <body>
 <!-- @extends('layouts.app')
- 
+
  @section('title', 'VinThri')
-  
+
  @section('contents') -->
     <div class="container">
         <div class="row">
@@ -22,7 +22,7 @@
                 </div>
             </div>
         </div>
-      
+
         @if ($errors->any())
             <div class="alert alert-danger">
                 <strong>Whoops!</strong> There were some problems with your input.<br><br>
@@ -33,10 +33,10 @@
                 </ul>
             </div>
         @endif
- 
+
         <form action="{{ route('product.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
-            
+
             <div class="row">
                 <div class="col-xs-12 col-sm-12 col-md-12">
                     <div class="form-group">
@@ -58,7 +58,7 @@
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-12">
                     <strong>Category:</strong>
-                    <select class="form-select" aria-label="Default select example" name="category_id">                       
+                    <select class="form-select" aria-label="Default select example" name="category_id">
                         <option value="" selected disabled>Select Category</option>
                         @foreach ($categories as $category)
                             <option value="{{$category->category_id}}">{{$category->name}}</option>
@@ -68,14 +68,14 @@
                 <div class="col-xs-12 col-sm-12 col-md-12">
                     <div class="form-group">
                         <strong>Image:</strong>
-                        <input type="file" name="image" class="form-control" placeholder="image">
+                        <input type="file" name="images[]" multiple class="form-control" placeholder="image">
                     </div>
-                </div>               
+                </div>
                 <div class="col-xs-12 col-sm-12 col-md-12 text-center">
                         <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
             </div>
-            
+
         </form>
     </div>
 </body>
