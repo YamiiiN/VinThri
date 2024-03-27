@@ -8,6 +8,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
+
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -17,8 +19,12 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+
+    protected $primaryKey = 'user_id';
+     
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
         'email',
         'password',
     ];
@@ -42,4 +48,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    protected function type(): Attribute
+    {
+        return new Attribute(
+            get: fn ($value) =>  ["user", "admin"][$value],
+        );
+    }
 }

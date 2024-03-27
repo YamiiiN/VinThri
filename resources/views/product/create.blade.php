@@ -6,6 +6,11 @@
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
+<!-- @extends('layouts.app')
+ 
+ @section('title', 'VinThri')
+  
+ @section('contents') -->
     <div class="container">
         <div class="row">
             <div class="col-lg-12 margin-tb">
