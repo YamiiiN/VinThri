@@ -56,7 +56,7 @@ class ProductController extends Controller
             'description' => 'required|string',
             'unit_price' => 'required|numeric',
             'category_id' => 'required|exists:categories,category_id',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'images.*' => 'required|image|max:2048',
             'supplier_id' => 'required|exists:suppliers,supplier_id',
             'price' => 'required|numeric',
             'date_supplied' => 'required|date',

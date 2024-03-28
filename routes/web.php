@@ -8,6 +8,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -118,4 +119,11 @@ Route::prefix('inventory')->group(function () {
     Route::get('/edit/{inventory}', [InventoryController::class, 'edit'])->name('inventory.edit');
     Route::put('/update/{inventory}', [InventoryController::class, 'update'])->name('inventory.update');
     // Route::delete('/destroy/{supplier}', [SupplierController::class, 'destroy'])->name('supplier.destroy');
+});
+
+
+// Profile EDIT (User).php
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 });
