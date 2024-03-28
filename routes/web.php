@@ -20,10 +20,12 @@ use App\Http\Controllers\InventoryController;
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-});
-    
+// Route::get('/', function () {
+//     return view('home');
+// });
+
+Route::get('/', [HomeController::class, 'index']);
+
 Route::prefix('product')->group(function () {
     Route::get('/', [ProductController::class, 'index'])->name('product.index');
     Route::get('/create', [ProductController::class, 'create'])->name('product.create');
@@ -35,7 +37,7 @@ Route::prefix('product')->group(function () {
 
 Route::controller(AuthController::class)->group(function () {
     Route::get('register', 'register')->name('register');
-    Route::post('register', 'registerSave')->name('register.save'); 
+    Route::post('register', 'registerSave')->name('register.save');
     Route::get('login', 'login')->name('login');
     Route::post('login', 'loginAction')->name('login.action');
     Route::get('logout', 'logout')->middleware('auth')->name('logout');
@@ -50,9 +52,9 @@ Route::middleware(['auth', 'user-access:user'])->group(function () {
 //Admin Routes List
 Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::get('/admin/home', [HomeController::class, 'adminHome'])->name('admin/home');
- 
+
     // Route::get('/admin/profile', [AdminController::class, 'profilepage'])->name('admin/profile');
- 
+
     // Route::get('/admin/products', [ProductController::class, 'index'])->name('admin/products');
     // Route::get('/admin/products/create', [ProductController::class, 'create'])->name('admin/products/create');
     // Route::post('/admin/products/store', [ProductController::class, 'store'])->name('admin/products/store');
