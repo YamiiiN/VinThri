@@ -17,7 +17,7 @@
                 </div>
             </div>
         </div>
-
+        
         @if ($errors->any())
             <div class="alert alert-danger">
                 <strong>Whoops!</strong> There were some problems with your input.<br><br>
@@ -28,12 +28,12 @@
                 </ul>
             </div>
         @endif
-
+        
         <form action="{{ route('product.update', $product->product_id) }}" method="POST" enctype="multipart/form-data">
 
             @csrf
             @method('PUT')
-
+        
             <div class="row">
                 <div class="col-xs-12 col-sm-12 col-md-12">
                     <div class="form-group">
@@ -60,20 +60,18 @@
                             <option value="{{ $category->category_id }}" @if ($category->category_id == $product->category_id) selected @endif>{{ $category->name }}</option>
                         @endforeach
                     </select>
-                </div>
+                </div>    
                 <div class="col-xs-12 col-sm-12 col-md-12">
                     <div class="form-group">
                         <strong>Image:</strong>
-                        <input type="file" name="images[]" multiple class="form-control" placeholder="image">
-                        @foreach(explode(',', $product->image) as $image)
-                        <img src="{{ asset($image) }}" alt="Product Image" style="max-width: 200px;"><br><br>
-                    @endforeach
+                        <input type="file" name="image" class="form-control" placeholder="image">
+                        <img src="/productImages/{{ $product->image }}" width="300px">
                     </div>
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-12 text-center">
                 <button type="submit" class="btn btn-primary">Update</button>
                 </div>
-            </div>
+            </div>     
         </form>
     </div>
 </body>
