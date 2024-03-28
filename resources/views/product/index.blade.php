@@ -42,8 +42,17 @@
                 <td>{{ $productSupplier->product->unit_price }}</td>
                 <td>{{ $productSupplier->supplier->first_name}} {{ $productSupplier->supplier->last_name}}</td>
                 <td>{{ $productSupplier->date_supplied }}</td>
-                <td>{{ $productSupplier->date_supplied }}</td>
+                <td>
+                        <form action="" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <a class="btn btn-primary" href="{{ route('product.edit', $productSupplier->product->product_id) }}">Edit</a>
 
+
+                           
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </td>       
             </tr>
             @endforeach
         </table>

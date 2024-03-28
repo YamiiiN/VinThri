@@ -23,12 +23,6 @@ class ProductController extends Controller
         $productSuppliers = ProductSupplier::all(); 
         $products = Product::latest()->paginate(5); 
         return view('product.index', compact('productSuppliers'));
-        // $products = Product::all();
-        // $categories = Category::all(); 
-        // $suppliers = Supplier::all(); 
-        // $productSuppliers = ProductSupplier::all(); 
-        // $products = Product::latest()->paginate(5); 
-        // return view('product.index', compact('products'));
     }
 
     /**
@@ -40,10 +34,6 @@ class ProductController extends Controller
         $suppliers = Supplier::all(); 
         $inventories = Inventory::all();
         return view('product.create', compact('categories', 'suppliers', 'inventories')); 
-        // $categories = Category::all(); 
-        // $suppliers = Supplier::all(); 
-        // $inventories = Inventory::all(); 
-        // return view('product.create', compact('categories', 'suppliers, inventories'));
     }
 
     /**
@@ -109,10 +99,17 @@ class ProductController extends Controller
      */
     public function edit($product_id)
     {
-        $product = Product::find($product_id);
-        $categories = Category::all(); 
+        $product = Product::findOrFail($product_id);
+        $categories = Category::all();
+        $suppliers = Supplier::all();
+        $productSupplier = ProductSupplier::where('product_id', $product_id)->first();
+        return view('product.edit', compact('product', 'categories', 'suppliers', 'productSupplier'));
+        // $product = Product::find($product_id);
+        // $categories = Category::all(); 
+        // $suppliers = Supplier::all(); 
+        // $productSuppliers = ProductSupplier::all($product->$product_id );
 
-        return view('product.edit', compact('product', 'categories'));
+        // return view('product.edit', compact('product', 'categories', 'suppliers', 'productSuppliers'));
     }
 
     /**
