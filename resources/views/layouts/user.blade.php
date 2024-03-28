@@ -13,10 +13,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
     
 </head>
- 
 <body>
     <div>
-        <nav class="bg-gray-800">
+        <nav class="bg-gray-800" style="background-color: #5F6F52">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex items-center justify-between h-16">
                     <div class="flex items-center">
@@ -25,7 +24,7 @@
                         </div>
                         <div class="hidden md:block">
                             <div class="ml-10 flex items-baseline space-x-4">
-                                <a href="" class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium">Home</a>
+                                <a href="" class="text-white px-3 py-2 rounded-md text-sm font-medium" style="background-color: #A9B388">Home</a>
                                 <a href="" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">About Us</a>
                                 <a href="" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Contact Us</a>
                             </div>
