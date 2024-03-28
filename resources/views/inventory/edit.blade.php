@@ -36,7 +36,14 @@
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
                     <strong name="image" >Image:</strong>
-                    <img src="/productImages/{{ $inventory->product->image }}" alt="Product Image" style="max-width: 100px;">
+                    <td>
+                        @php
+                        $images = explode(',', $inventory->product->images);
+                        @endphp
+                        @foreach ($images as $image)
+                        <img src="/productImages/{{ $image }}" width="100px" style="margin-right: 10px;">
+                        @endforeach
+                    </td> 
                 </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12">

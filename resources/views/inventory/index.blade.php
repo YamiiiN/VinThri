@@ -22,7 +22,14 @@
         @foreach ($inventories as $inventory)
         <tr>
             <td>{{ $inventory->product->name }}</td>
-            <td><img src="/productImages/{{ $inventory->product->image }}" width="100px"></td>
+            <td>
+                @php
+                $images = explode(',', $inventory->product->images);
+                @endphp
+                @foreach ($images as $image)
+                <img src="/productImages/{{ $image }}" width="100px" style="margin-right: 10px;">
+                @endforeach
+            </td> 
             <td>{{ $inventory->stock }}</td>
             <td>
                 <form action="" method="POST">

@@ -1,8 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Product;
+
 use Illuminate\Http\Request;
+
+use App\Models\Product;
+use App\Models\Inventory;
 
 class HomeController extends Controller
 {
@@ -11,15 +14,20 @@ class HomeController extends Controller
         $this->middleware('auth');
     }
 
+
     public function index()
     {
-        $products = Product::all();
-        return view('home', compact('products'));
+        $products = Product::all(); 
+        $inventories = Inventory::all(); 
+
+        return view('home', compact('inventories'));
+        // return view('home');    
     }
-
-
+ 
     public function adminHome()
     {
         return view('dashboard');
     }
 }
+
+?>

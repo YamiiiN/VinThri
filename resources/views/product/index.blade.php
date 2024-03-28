@@ -1,7 +1,7 @@
 @extends('layouts.app')
-
+ 
 @section('title', 'VinThri')
-
+ 
 @section('contents')
 <div>
     <h1 class="font-bold text-2xl ml-3">Products</h1>
@@ -14,13 +14,13 @@
                 </div>
             </div>
         </div>
-
+        
         @if ($message = Session::get('success'))
             <div class="alert alert-success">
                 <p>{{ $message }}</p>
             </div>
         @endif
-
+    
         <table class="table table-bordered">
             <tr>
                 <th>Image</th>
@@ -33,14 +33,16 @@
                 <th width="280px">Action</th>
             </tr>
 
-            @foreach ($productSuppliers as $productSupplier)
-            <tr>
-                <td>{{ $productSupplier->product->product_id }}</td>
+            @foreach ($productSuppliers as $productSupplier)           
+            <tr>             
                 <td>
-                    @foreach(explode(',', $productSupplier->product->image) as $image)
-                        <img src="{{ asset($image) }}" alt="Product Image" style="max-width: 100px;"><br><br>
+                    @php
+                    $images = explode(',', $productSupplier->product->images);
+                    @endphp
+                    @foreach ($images as $image)
+                    <img src="/productImages/{{ $image }}" width="100px" style="margin-right: 10px;">
                     @endforeach
-                </td>
+                </td> 
                 <td>{{ $productSupplier->product->name }}</td>
                 <td>{{ $productSupplier->product->category->name }}</td>
                 <td>{{ $productSupplier->product->description }}</td>
@@ -59,8 +61,7 @@
                         </form>
                     </td>       
             </tr>
-        @endforeach
-
+            @endforeach
         </table>
     </div>
 @endsection

@@ -12,7 +12,7 @@ class Product extends Model
     protected $primaryKey = 'product_id';
     
     protected $fillable = [
-        'name', 'description', 'unit_price', 'category_id', 'image',
+        'name', 'description', 'unit_price', 'category_id', 'images',
     ];
 
     public function productSuppliers()
@@ -28,5 +28,10 @@ class Product extends Model
     public function inventories()
     {
         return $this->hasMany(Inventory::class, 'product_id');
+    }
+
+    public function cart()
+    {
+        return $this->hasMany(Cart::class, 'product_id');
     }
 }
