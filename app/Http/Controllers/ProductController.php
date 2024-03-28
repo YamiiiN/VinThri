@@ -18,10 +18,10 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::all();
-        $categories = Category::all(); 
-        $suppliers = Supplier::all(); 
-        $productSuppliers = ProductSupplier::all(); 
-        $products = Product::latest()->paginate(5); 
+        $categories = Category::all();
+        $suppliers = Supplier::all();
+        $productSuppliers = ProductSupplier::all();
+        $products = Product::latest()->paginate(5);
         return view('product.index', compact('productSuppliers'));
     }
 
@@ -30,8 +30,8 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $categories = Category::all(); 
-        $suppliers = Supplier::all(); 
+        $categories = Category::all();
+        $suppliers = Supplier::all();
         $inventories = Inventory::all();
         return view('product.create', compact('categories', 'suppliers', 'inventories')); 
     }
@@ -46,26 +46,30 @@ class ProductController extends Controller
             'description' => 'required|string',
             'unit_price' => 'required|numeric',
             'category_id' => 'required|exists:categories,category_id',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'images.*' => 'required|image|max:2048',
             'supplier_id' => 'required|exists:suppliers,supplier_id',
             'price' => 'required|numeric',
             'date_supplied' => 'required|date',
             'stock' => 'required|numeric',
         ]);
+        $imagePaths = [];
+        foreach ($request->file('images') as $image) {
+            $imageName = basename($image->getClientOriginalName());
+
+            if (!file_exists(public_path('imgs') . '/' . $imageName)) {
+                $image->move(public_path('imgs'), $imageName);
+            }
+
+            $imagePaths[] = 'imgs/' . $imageName;
+        }
 
         $product = new Product();
         $product->name = $validatedData['name'];
+        $product->image = implode(',', $imagePaths);
         $product->description = $validatedData['description'];
         $product->unit_price = $validatedData['unit_price'];
         $product->category_id = $validatedData['category_id'];
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = time().'.'.$image->extension();
-            $image->move(public_path('productImages'), $imageName);
-            $product->image = $imageName;
-        } else {
-            $product->image = 'default_image.jpg';
-        }
+
         $product->save();
 
         $productSupplier = new ProductSupplier();
@@ -96,8 +100,7 @@ class ProductController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     */
-    public function edit($product_id)
+     */ public function edit($product_id)
     {
         $product = Product::findOrFail($product_id);
         $categories = Category::all();
@@ -119,30 +122,31 @@ class ProductController extends Controller
     {
         $request->validate([
             'name' => 'required',
+            'images.*' => 'required|image|max:2048',
             'description' => 'required',
             'unit_price' => 'required',
             'category_id' => 'required'
         ]);
-    
+
+        $imagePaths = [];
+
+        foreach ($request->file('images') as $image) {
+            $imageName = basename($image->getClientOriginalName());
+
+            if (!file_exists(public_path('imgs') . '/' . $imageName)) {
+                $image->move(public_path('imgs'), $imageName);
+            }
+
+            $imagePaths[] = 'imgs/' . $imageName;
+        }
+
+
         $product->name = $request->name;
+        $product->image = implode(',', $imagePaths);
         $product->description = $request->description;
         $product->unit_price = $request->unit_price;
-        $product->category_id = $request->category_id;
-    
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = time() . '.' . $image->extension();
-            $image->move(public_path('productImages'), $imageName);
-    
-            if ($product->image && file_exists(public_path('productImages/' . $product->image))) {
-                unlink(public_path('productImages/' . $product->image));
-            }
-    
-            $product->image = $imageName;
-        }
-    
         $product->save();
-    
+
         return redirect()->route('product.index')->with('success', 'Product updated successfully');
     }
 
