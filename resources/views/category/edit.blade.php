@@ -22,7 +22,8 @@
             </div>
         @endif
         
-        <form action="{{ route('category.update', $category->category_id) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('category.update', $category) }}" method="POST" enctype="multipart/form-data">
+
 
             @csrf
             @method('PUT')
@@ -31,13 +32,13 @@
                 <div class="col-xs-12 col-sm-12 col-md-12">
                     <div class="form-group">
                         <strong>Name:</strong>
-                        <input type="text" name="name" value="{{ $product->name }}" class="form-control">
+                        <input type="text" name="name" value="{{ $category->name }}" class="form-control">
                     </div>
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-12">
                     <div class="form-group">
                         <strong>Description:</strong>
-                        <textarea class="form-control" style="height:150px" name="description" placeholder="Detail">{{ $product->description }}</textarea>
+                        <input type="text" name="description" value="{{ $category->description }}" class="form-control">
                     </div>
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-12 text-center">

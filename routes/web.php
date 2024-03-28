@@ -5,6 +5,9 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\InventoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -82,9 +85,35 @@ Route::prefix('category')->group(function () {
     Route::get('/', [CategoryController::class, 'index'])->name('category.index');
     Route::get('/create', [CategoryController::class, 'create'])->name('category.create');
     Route::post('/store', [CategoryController::class, 'store'])->name('category.store');
-    // Route::get('/edit/{product_id}', [CategoryController::class, 'edit'])->name('product.edit');
-    // Route::put('/update/{product}', [CategoryController::class, 'update'])->name('product.update');
-    // Route::delete('/destroy/{product}', [CategoryController::class, 'destroy'])->name('product.destroy');
+    Route::get('/edit/{category}', [CategoryController::class, 'edit'])->name('category.edit');
+    Route::put('/update/{category}', [CategoryController::class, 'update'])->name('category.update');
+    Route::delete('/destroy/{category}', [CategoryController::class, 'destroy'])->name('category.destroy');
 });
 
- 
+Route::prefix('supplier')->group(function () {
+    Route::get('/', [SupplierController::class, 'index'])->name('supplier.index');
+    Route::get('/create', [SupplierController::class, 'create'])->name('supplier.create');
+    Route::post('/store', [SupplierController::class, 'store'])->name('supplier.store');
+    Route::get('/edit/{supplier}', [SupplierController::class, 'edit'])->name('supplier.edit');
+    Route::put('/update/{supplier}', [SupplierController::class, 'update'])->name('supplier.update');
+    Route::delete('/destroy/{supplier}', [SupplierController::class, 'destroy'])->name('supplier.destroy');
+});
+
+Route::prefix('admin')->group(function () {
+    Route::get('/', [AdminController::class, 'index'])->name('admin.index');
+    // Route::get('/create', [ProductController::class, 'create'])->name('product.create');
+    // Route::post('/store', [ProductController::class, 'store'])->name('product.store');
+    // Route::get('/edit/{product_id}', [ProductController::class, 'edit'])->name('product.edit');
+    // Route::put('/update/{product}', [ProductController::class, 'update'])->name('product.update');
+    // Route::delete('/destroy/{product}', [ProductController::class, 'destroy'])->name('product.destroy');
+});
+
+
+Route::prefix('inventory')->group(function () {
+    Route::get('/', [InventoryController::class, 'index'])->name('inventory.index');
+    // Route::get('/create', [SupplierController::class, 'create'])->name('supplier.create');
+    // Route::post('/store', [SupplierController::class, 'store'])->name('supplier.store');
+    Route::get('/edit/{inventory}', [InventoryController::class, 'edit'])->name('inventory.edit');
+    Route::put('/update/{inventory}', [InventoryController::class, 'update'])->name('inventory.update');
+    // Route::delete('/destroy/{supplier}', [SupplierController::class, 'destroy'])->name('supplier.destroy');
+});

@@ -1,4 +1,3 @@
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 @extends('layouts.app')
  
 @section('title', 'VinThri')
@@ -24,35 +23,29 @@
     
         <table class="table table-bordered">
             <tr>
-                <th>No</th>
                 <th>Image</th>
                 <th>Name</th>
+                <th>Category</th>
                 <th>Details</th>
-                <th>Price</th>
+                <th>Selling Price</th>
+                <th>Supplier</th>
+                <th>Date Supplied</th>
                 <th width="280px">Action</th>
             </tr>
-            @foreach ($products as $product)           
-            <tr>
-                <td>{{ $product->product_id }}</td>
-                <td><img src="/productImages/{{ $product->image }}" width="100px"></td>
-                <td>{{ $product->name }}</td>
-                <td>{{ $product->description }}</td>
-                <td>{{ $product->unit_price }}</td>
-                <td>
-                    
-                    <form action="{{ route('product.destroy', $product->product_id) }}" method="POST">        
-                        <a class="btn btn-primary" href="{{ route('product.edit', $product->product_id) }}">Edit</a>
-        
-                        @csrf
-                        @method('DELETE')
-            
-                        <button type="submit" class="btn btn-danger" >Delete</button>
-                    </form>
-                </td>
+
+            @foreach ($productSuppliers as $productSupplier)           
+            <tr>              
+                <td><img src="/productImages/{{ $productSupplier->product->image }}" width="100px"></td>
+                <td>{{ $productSupplier->product->name }}</td>
+                <td>{{ $productSupplier->product->category->name }}</td>
+                <td>{{ $productSupplier->product->description }}</td>
+                <td>{{ $productSupplier->product->unit_price }}</td>
+                <td>{{ $productSupplier->supplier->first_name}} {{ $productSupplier->supplier->last_name}}</td>
+                <td>{{ $productSupplier->date_supplied }}</td>
+                <td>{{ $productSupplier->date_supplied }}</td>
+
             </tr>
             @endforeach
         </table>
-        
-        {!! $products->links() !!}
     </div>
 @endsection

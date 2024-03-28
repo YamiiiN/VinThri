@@ -4,13 +4,13 @@
 
 @section('contents')
     <div>
-        <h1 class="font-bold text-2xl ml-3">Categories</h1>
+        <h1 class="font-bold text-2xl ml-3">Suppliers</h1>
     </div>
     <div class="container">
         <div class="row">
             <div class="col-lg-12 margin-tb">
                 <div class="pull-right" style="margin-bottom:10px;">
-                    <a class="btn btn-success" href="{{ url('/category/create') }}">Create New Category</a>
+                    <a class="btn btn-success" href="{{ url('/supplier/create') }}">Create New Supplier</a>
                 </div>
             </div>
         </div>
@@ -23,19 +23,24 @@
 
         <table class="table table-bordered">
             <tr>
-                <th>Name</th>
-                <th>Descriptionme</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Image</th>
+                <th>Address</th>
                 <th width="280px">Action</th>
             </tr>
-            @foreach ($categories as $category)
+            @foreach ($suppliers as $supplier)
                 <tr>
-                    <td>{{ $category->name }}</td>
-                    <td>{{ $category->description }}</td>
+                    <td>{{ $supplier->first_name }}</td>
+                    <td>{{ $supplier->last_name }}</td>
+                    <td><img src="/supplierImages/{{ $supplier->image }}" width="100px"></td>
+                    <td>{{ $supplier->address }}</td>
                     <td>
-                        <form action="{{ route('category.destroy', $category) }}" method="POST">
+                        <form action="{{ route('supplier.destroy', $supplier->supplier_id) }}" method="POST">
                             @csrf
                             @method('DELETE')
-                            <a class="btn btn-primary" href="{{ route('category.edit', $category->category_id) }}">Edit</a>
+                            <a class="btn btn-primary" href="{{ route('supplier.edit', $supplier->supplier_id) }}">Edit</a>
+
                             <button type="submit" class="btn btn-danger">Delete</button>
                         </form>
                     </td>
@@ -43,6 +48,6 @@
             @endforeach
         </table>
 
-        <!-- {!! $categories->links() !!} -->
+        {!! $suppliers->links() !!}
     </div>
 @endsection

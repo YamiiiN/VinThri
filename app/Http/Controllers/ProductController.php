@@ -6,6 +6,9 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 
 use App\Models\Category;
+use App\Models\Supplier;
+use App\Models\ProductSupplier;
+use App\Models\Inventory;
 
 class ProductController extends Controller
 {
@@ -15,8 +18,17 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::all();
+        $categories = Category::all(); 
+        $suppliers = Supplier::all(); 
+        $productSuppliers = ProductSupplier::all(); 
         $products = Product::latest()->paginate(5); 
-        return view('product.index', compact('products'));
+        return view('product.index', compact('productSuppliers'));
+        // $products = Product::all();
+        // $categories = Category::all(); 
+        // $suppliers = Supplier::all(); 
+        // $productSuppliers = ProductSupplier::all(); 
+        // $products = Product::latest()->paginate(5); 
+        // return view('product.index', compact('products'));
     }
 
     /**
@@ -25,7 +37,13 @@ class ProductController extends Controller
     public function create()
     {
         $categories = Category::all(); 
-        return view('product.create', compact('categories'));
+        $suppliers = Supplier::all(); 
+        $inventories = Inventory::all();
+        return view('product.create', compact('categories', 'suppliers', 'inventories')); 
+        // $categories = Category::all(); 
+        // $suppliers = Supplier::all(); 
+        // $inventories = Inventory::all(); 
+        // return view('product.create', compact('categories', 'suppliers, inventories'));
     }
 
     /**
@@ -33,36 +51,49 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'description' => 'required',
-            'unit_price' => 'required',
-            'category_id' => 'required',
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'unit_price' => 'required|numeric',
+            'category_id' => 'required|exists:categories,category_id',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'supplier_id' => 'required|exists:suppliers,supplier_id',
+            'price' => 'required|numeric',
+            'date_supplied' => 'required|date',
+            'stock' => 'required|numeric',
         ]);
-   
-        $product = new Product;
-        $product->name = $request->name;
-        $product->description = $request->description;
-        $product->unit_price = $request->unit_price;
-        $product->category_id = $request->category_id;
-   
+
+        $product = new Product();
+        $product->name = $validatedData['name'];
+        $product->description = $validatedData['description'];
+        $product->unit_price = $validatedData['unit_price'];
+        $product->category_id = $validatedData['category_id'];
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $imageName = time().'.'.$image->extension();
             $image->move(public_path('productImages'), $imageName);
             $product->image = $imageName;
         } else {
-            // Handle case where no image is uploaded
-            // You can set a default image or leave it blank depending on your requirements
-            // For example:
             $product->image = 'default_image.jpg';
         }
-     
         $product->save();
-    
+
+        $productSupplier = new ProductSupplier();
+        $productSupplier->date_supplied = $validatedData['date_supplied'];
+        $productSupplier->price = $validatedData['price'];
+        $productSupplier->product_id = $product->product_id; // Correctly referencing the primary key column
+        $productSupplier->supplier_id = $validatedData['supplier_id'];
+        $productSupplier->save();
+
+        $inventories = new Inventory();
+        $inventories->stock = $validatedData['stock'];
+        $inventories->product_id = $product->product_id; // Correctly referencing the primary key column
+        $inventories->save();
+
         return redirect()->route('product.index')->with('success','Product created successfully.');
     }
+
+
 
     /**
      * Display the specified resource.
@@ -125,7 +156,5 @@ class ProductController extends Controller
     {
         $product->delete();
         return redirect()->route('product.index')->with('success', 'Product deleted successfully');
-        // Product::destroy($product_id);
-        // return redirect()->route('product.index')->with('success', 'Product deleted successfully');
     }
 }
