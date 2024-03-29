@@ -9,6 +9,7 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\MainPageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,7 +25,7 @@ use App\Http\Controllers\CartController;
 // Route::get('/', function () {
 //     return view('home');
 // });
-Route::get('/', [HomeController::class, 'welcome'])->name('welcome');
+Route::get('/', [MainPageController::class, 'welcome'])->name('welcome');
 
 Route::prefix('product')->group(function () {
     Route::get('/', [ProductController::class, 'index'])->name('product.index');

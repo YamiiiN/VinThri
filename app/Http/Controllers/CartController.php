@@ -6,17 +6,18 @@ use App\Models\Cart;
 use App\Models\Inventory;
 use App\Models\Customer;
 
+
 use Illuminate\Http\Request;
 
 
 class CartController extends Controller
 {
-    use App\Models\Customer; // Import Customer model if not already imported
+
 
 public function display(Request $request)
 {
     // Retrieve the customer ID from the authenticated user
-    $customerId = auth()->user()->customer->id;
+    $customerId = auth()->user()->customer->customer_id;
 
     // Fetch the cart items for the current customer
     $cartItems = Cart::where('customer_id', $customerId)->get();
@@ -25,13 +26,16 @@ public function display(Request $request)
     // You can do this by joining the Cart table with the Inventory table or directly querying the Inventory table
 
     // For example, assuming you have a 'products' table and each cart item has a 'product_id' referencing a product:
-    $cartItemsWithProductInfo = Cart::where('customer_id', $customerId)
-                                     ->join('products', 'carts.product_id', '=', 'products.id')
-                                     ->select('carts.*', 'products.name', 'products.price')
-                                     ->get();
+ // Fetch cart items with product information
+$cartItemsWithProductInfo = Cart::where('customer_id', $customerId)
+->join('products', 'carts.product_id', '=', 'products.product_id')
+->select('carts.*', 'products.name', 'products.unit_price')
+->get();
+
+
 
     // Pass the cart items to the view
-    return view('cart.display_items', ['cartItems' => $cartItems]);
+    return view('cart.display_items', ['cartItems' => $cartItemsWithProductInfo]);
 }
 
     /**
@@ -94,7 +98,7 @@ public function display(Request $request)
         $cart->save();
 
         // Redirect to the home page with a success message
-        return redirect('cart.display')->with('success', 'Product added to cart successfully.');
+        return redirect('/cart/display')->with('success', 'Product added to cart successfully.');
     }
 
     public function showAddToCartForm($productId)
