@@ -83,7 +83,7 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     //     Route::delete('/destroy/{product}', [ProductController::class, 'destroy'])->name('product.destroy');
     // });
 });
-//SACSC
+
 Route::prefix('category')->group(function () {
     Route::get('/', [CategoryController::class, 'index'])->name('category.index');
     Route::get('/create', [CategoryController::class, 'create'])->name('category.create');
