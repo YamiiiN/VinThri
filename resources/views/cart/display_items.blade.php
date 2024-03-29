@@ -38,6 +38,8 @@
                 <p>Grand Total: <span id="grandTotal">0.00</span></p>
             </div>
             <button onclick="checkout()">Checkout</button> <!-- Checkout button -->
+            <!-- Add the button for deleting checked items -->
+            <button onclick="deleteSelectedItems()">Delete Selected</button>
 
         @endif
     </div>
@@ -102,4 +104,50 @@
             alert('An error occurred. Please try again later.');
         });
     }
+
+    function deleteSelectedItems() {
+    var checkedItems = document.querySelectorAll('.itemCheckbox:checked');
+    if (checkedItems.length === 0) {
+        alert('Please select items to delete.');
+        return;
+    }
+    if (confirm('Are you sure you want to delete the selected items?')) {
+        checkedItems.forEach(function(item) {
+            // Remove the row from the table
+            item.closest('tr').remove();
+            // Send a POST request to delete the item from the database
+            deleteCartItem(item.getAttribute('data-cart-id'));
+        });
+        updateTotals(); // Update totals after deletion
+    }
+}
+
+// Function to send a POST request to delete a cart item from the database
+function deleteCartItem(productId) {
+    alert('Deleting product with ID: ' + productId);
+    fetch('/cart/delete/' + productId, { // Assuming the route accepts the product ID
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to delete item.');
+        } else {
+            // Optionally, update the cart display after successful deletion
+            // Implement the logic to update the cart display here
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while deleting the item.');
+
+        response.text().then(errorMessage => {
+                alert('Checkout failed: ' + errorMessage);
+        })
+    });
+}
+
 </script>

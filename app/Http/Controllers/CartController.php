@@ -14,6 +14,26 @@ use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
+    public function deleteCartItem($productId)
+    {
+        try {
+            // Find the cart item by product ID and delete it
+            $cartItem = Cart::where('product_id', $productId)->first();
+
+            if (!$cartItem) {
+                return response()->json(['message' => 'Cart item not found'], 404);
+            }
+
+            $cartItem->delete();
+
+            return response()->json(['message' => 'Cart item deleted successfully'], 200);
+        } catch (\Exception $e) {
+            // Handle any other errors
+            return response()->json(['message' => 'Failed to delete cart item'], 500);
+        }
+    }
+
+
 
    public function checkout(Request $request)
 {
@@ -50,7 +70,7 @@ class CartController extends Controller
             // Handle case where inventory record doesn't exist for the product
         }
     }
-
+    Cart::whereIn('product_id', collect($cartItems)->pluck('product_id'))->delete();
     // Optionally, update inventory or perform any other necessary actions
 
     // Return a response indicating success

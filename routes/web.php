@@ -133,5 +133,7 @@ Route::post('/cart/store', [CartController::class, 'store'])->name('cart.store')
 Route::get('/cart/display', [CartController::class, 'display'])->name('cart.display');
 
 Route::post('/checkout', [CartController::class, 'checkout'])->name('checkout');
+// Route for deleting a cart item by product ID
+Route::post('/cart/delete/{productId}', [CartController::class, 'deleteCartItem'])->name('cart.delete');
 
 //hi
