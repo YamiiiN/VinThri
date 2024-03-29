@@ -18,10 +18,10 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::all();
-        $categories = Category::all(); 
-        $suppliers = Supplier::all(); 
-        $productSuppliers = ProductSupplier::all(); 
-        $products = Product::latest()->paginate(5); 
+        $categories = Category::all();
+        $suppliers = Supplier::all();
+        $productSuppliers = ProductSupplier::all();
+        $products = Product::latest()->paginate(5);
         return view('product.index', compact('productSuppliers'));
     }
 
@@ -30,10 +30,10 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $categories = Category::all(); 
-        $suppliers = Supplier::all(); 
+        $categories = Category::all();
+        $suppliers = Supplier::all();
         $inventories = Inventory::all();
-        return view('product.create', compact('categories', 'suppliers', 'inventories')); 
+        return view('product.create', compact('categories', 'suppliers', 'inventories'));
     }
 
     /**
@@ -89,7 +89,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        
+
     }
 
 
@@ -149,26 +149,26 @@ class ProductController extends Controller
     //         'unit_price' => 'required',
     //         'category_id' => 'required'
     //     ]);
-    
+
     //     $product->name = $request->name;
     //     $product->description = $request->description;
     //     $product->unit_price = $request->unit_price;
     //     $product->category_id = $request->category_id;
-    
+
     //     if ($request->hasFile('image')) {
     //         $image = $request->file('image');
     //         $imageName = time() . '.' . $image->extension();
     //         $image->move(public_path('productImages'), $imageName);
-    
+
     //         if ($product->image && file_exists(public_path('productImages/' . $product->image))) {
     //             unlink(public_path('productImages/' . $product->image));
     //         }
-    
+
     //         $product->image = $imageName;
     //     }
-    
+
     //     $product->save();
-    
+
     //     return redirect()->route('product.index')->with('success', 'Product updated successfully');
     // }
 

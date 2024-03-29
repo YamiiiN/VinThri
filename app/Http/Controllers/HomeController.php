@@ -17,13 +17,20 @@ class HomeController extends Controller
 
     public function index()
     {
-        $products = Product::all(); 
-        $inventories = Inventory::all(); 
+        $products = Product::all();
+        $inventories = Inventory::all();
 
         return view('home', compact('inventories'));
-        // return view('home');    
+        // return view('home');
     }
- 
+    public function welcome()
+    {
+        $products = Product::all();
+        $inventories = Inventory::all();
+
+        return view('welcome', compact('inventories'));
+        // return view('home');
+    }
     public function adminHome()
     {
         return view('dashboard');

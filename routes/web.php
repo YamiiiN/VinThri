@@ -8,6 +8,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\CartController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,8 +24,8 @@ use App\Http\Controllers\InventoryController;
 // Route::get('/', function () {
 //     return view('home');
 // });
-Route::get('/', [HomeController::class, 'index'])->name('home');
-    
+Route::get('/', [HomeController::class, 'welcome'])->name('welcome');
+
 Route::prefix('product')->group(function () {
     Route::get('/', [ProductController::class, 'index'])->name('product.index');
     Route::get('/create', [ProductController::class, 'create'])->name('product.create');
@@ -36,7 +37,7 @@ Route::prefix('product')->group(function () {
 
 Route::controller(AuthController::class)->group(function () {
     Route::get('register', 'register')->name('register');
-    Route::post('register', 'registerSave')->name('register.save'); 
+    Route::post('register', 'registerSave')->name('register.save');
     Route::get('login', 'login')->name('login');
     Route::post('login', 'loginAction')->name('login.action');
     Route::get('logout', 'logout')->middleware('auth')->name('logout');
@@ -51,9 +52,9 @@ Route::middleware(['auth', 'user-access:user'])->group(function () {
 //Admin Routes List
 Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::get('/admin/home', [HomeController::class, 'adminHome'])->name('admin/home');
- 
+
     // Route::get('/admin/profile', [AdminController::class, 'profilepage'])->name('admin/profile');
- 
+
     // Route::get('/admin/products', [ProductController::class, 'index'])->name('admin/products');
     // Route::get('/admin/products/create', [ProductController::class, 'create'])->name('admin/products/create');
     // Route::post('/admin/products/store', [ProductController::class, 'store'])->name('admin/products/store');
@@ -118,3 +119,12 @@ Route::prefix('inventory')->group(function () {
     Route::put('/update/{inventory}', [InventoryController::class, 'update'])->name('inventory.update');
     // Route::delete('/destroy/{supplier}', [SupplierController::class, 'destroy'])->name('supplier.destroy');
 });
+
+
+//Add to cart
+// Route for displaying the HTML form
+Route::get('/cart/input/{productId}', [CartController::class, 'showAddToCartForm'])->name('cart.show_add_form');
+
+// Route for processing the form submission
+Route::post('/cart/add', [CartController::class, 'create'])->name('cart.create');
+Route::post('/cart/store', [CartController::class, 'store'])->name('cart.store');
