@@ -113,9 +113,9 @@ $cartItemsWithProductInfo = Cart::where('customer_id', $customerId)
      * Show the form for creating a new resource.
      */
     public function create(Request $request)
-
     {
         $productId = $request->input('product_id');
+        $product = Product::findOrFail($productId);
         $customerId = auth()->user()->customer->id; // Assuming you have authentication and a customer relationship
 
         // Check if the product already exists in the cart for the current customer

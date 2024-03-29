@@ -1,5 +1,22 @@
+@extends('layouts.user')
+
+@section('title', 'Home')
+
+@section('contents')
 <form id="cartForm" action="{{ route('cart.store') }}" method="POST">
     @csrf
+    @if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+    @endif
+
+    @if(isset($product))
+    <div>
+        <label for="name">Name: </label>
+        <span id="name">{{ $cart->product->name }}</span>
+    </div>
+    @endif
     <div>
         <label for="product_id">Product ID:</label>
         <input type="text" id="product_id" name="product_id" value="{{ $productId }}" readonly>
@@ -33,3 +50,4 @@
     });
 </script>
  <!-- hi -->
+ @endsection

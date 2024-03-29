@@ -1,3 +1,8 @@
+@extends('layouts.user')
+
+@section('title', 'Home')
+
+@section('contents')
 <div class="container">
     <h1>Cart Items</h1>
     <div>
@@ -151,3 +156,4 @@ function deleteCartItem(productId) {
 }
 
 </script>
+@endsection

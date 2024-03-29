@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
 
+use App\Models\Order;
+
 class AdminController extends Controller
 {
     /**
@@ -66,4 +68,32 @@ class AdminController extends Controller
     {
         //
     }
+
+    // public function updateOrderStatus(Order $order, $status)
+    // {
+    //     $order->update(['status' => $status]);
+    //     return redirect()->back()->with('success', 'Order status updated successfully.');
+    // }
+
+    public function updateOrderStatus($orderId, Request $request)
+    {
+        $status = $request->input('status');
+    
+        // Find the order by its ID
+        $order = Order::findOrFail($orderId);
+    
+        // Update the order status
+        $order->update(['status' => $status]);
+    
+        // Redirect back with a success message
+        return redirect()->back()->with('success', 'Order status updated successfully.');
+    }
+    
+    public function indexOrders()
+    {
+        $orders = Order::with('customer')->get();
+        // dd($orders);
+        return view('orderAdmin.index', compact('orders'));
+    }
+
 }
