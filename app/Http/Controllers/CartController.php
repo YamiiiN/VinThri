@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Cart;
 use App\Models\Inventory;
 use App\Models\Customer;
+use App\Models\Order;
+use App\Models\OrderItem;
 
 
 use Illuminate\Http\Request;
@@ -13,6 +15,47 @@ use Illuminate\Http\Request;
 class CartController extends Controller
 {
 
+   public function checkout(Request $request)
+{
+    // Retrieve the current logged-in customer's ID
+    $customerId = auth()->user()->customer->customer_id;
+
+    // Create a new order
+    $order = new Order();
+    $order->date = now(); // Current date
+    $order->status = 'pending'; // Default status
+    $order->customer_id = $customerId;
+    $order->save();
+
+    // Retrieve the newly created order ID
+    $orderId = $order->order_id; // Assuming 'order_id' is the primary key
+
+    // Retrieve cart items from the request
+    $cartItems = $request->input('cartItems');
+
+    // Create order items for each cart item
+    foreach ($cartItems as $cartItem) {
+        $orderItem = new OrderItem();
+        $orderItem->quantity = $cartItem['quantity'];
+        $orderItem->order_id = $orderId;
+        $orderItem->product_id = $cartItem['product_id'];
+        $orderItem->save();
+
+        // Deduct quantity from inventory stock
+        $inventory = Inventory::where('product_id', $cartItem['product_id'])->first();
+        if ($inventory) {
+            $inventory->stock -= $cartItem['quantity'];
+            $inventory->save();
+        } else {
+            // Handle case where inventory record doesn't exist for the product
+        }
+    }
+
+    // Optionally, update inventory or perform any other necessary actions
+
+    // Return a response indicating success
+    return response()->json(['message' => 'Checkout successful'], 200);
+}
 
 public function display(Request $request)
 {

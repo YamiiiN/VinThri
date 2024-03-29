@@ -1,5 +1,3 @@
-<!-- resources/views/cart/display.blade.php -->
-
 <div class="container">
     <h1>Cart Items</h1>
     <div>
@@ -22,7 +20,8 @@
                     @foreach ($cartItems as $cartItem)
                         <tr>
                             <td>
-                                <input type="checkbox" class="itemCheckbox" data-unit-price="{{ $cartItem->unit_price }}" data-cart-id="{{ $cartItem->id }}">
+                                <input type="checkbox" class="itemCheckbox" data-unit-price="{{ $cartItem->unit_price }}" data-cart-id="{{ $cartItem->product_id }}">
+
                             </td>
                             <td>{{ $cartItem->product_id }}</td>
                             <td>{{ $cartItem->name }}</td>
@@ -37,8 +36,9 @@
             </table>
             <div>
                 <p>Grand Total: <span id="grandTotal">0.00</span></p>
-                <button onclick="checkout()">Checkout</button>
             </div>
+            <button onclick="checkout()">Checkout</button> <!-- Checkout button -->
+
         @endif
     </div>
 </div>
@@ -63,5 +63,43 @@
             }
         });
         document.getElementById('grandTotal').textContent = grandTotal.toFixed(2);
+    }
+
+    // Function to handle the checkout process
+    function checkout() {
+        var cartItems = [];
+        document.querySelectorAll('.itemCheckbox:checked').forEach(function(item) {
+            cartItems.push({
+                product_id: item.getAttribute('data-cart-id'),
+                quantity: item.closest('tr').querySelector('.quantityInput').value
+            });
+        });
+
+        // Send a POST request to the checkout route with cart items data
+        fetch('{{ route('checkout') }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({ cartItems: cartItems })
+        })
+        .then(response => {
+            if (response.ok) {
+                // Handle successful response
+                alert('Checkout successful!');
+                // Optionally, redirect to another page
+                window.location.href = '/cart/display';
+            } else {
+                // Handle error response
+            response.text().then(errorMessage => {
+                alert('Checkout failed: ' + errorMessage);
+            })
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred. Please try again later.');
+        });
     }
 </script>
