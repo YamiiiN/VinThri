@@ -87,6 +87,7 @@
                             <div class="ml-3 text-sm">
                                 <label for="terms" class="font-light text-gray-500 dark:text-gray-300">I accept the <a class="font-medium text-primary-600 hover:underline dark:text-primary-500" href="#">Terms and Conditions</a></label>
                             </div>
+
                         </div>
                         <!-- Add the Submit button -->
                         <button type="submit" class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Create an account</button>
@@ -94,11 +95,14 @@
                         <p class="text-sm font-light text-gray-500 dark:text-gray-400">
                             Already have an account? <a href="{{ route('login') }}" class="font-medium text-primary-600 hover:underline dark:text-primary-500">Login here</a>
                         </p>
+
                     </form>
                 </div>
             </div>
         </div>
     </section>
 </body>
-
 </html>
+
+
+ <!-- hi -->

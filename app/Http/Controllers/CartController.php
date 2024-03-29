@@ -4,12 +4,36 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\Inventory;
+use App\Models\Customer;
 
 use Illuminate\Http\Request;
 
 
 class CartController extends Controller
 {
+    use App\Models\Customer; // Import Customer model if not already imported
+
+public function display(Request $request)
+{
+    // Retrieve the customer ID from the authenticated user
+    $customerId = auth()->user()->customer->id;
+
+    // Fetch the cart items for the current customer
+    $cartItems = Cart::where('customer_id', $customerId)->get();
+
+    // You may want to fetch additional information about the products in the cart, like their names, prices, etc.
+    // You can do this by joining the Cart table with the Inventory table or directly querying the Inventory table
+
+    // For example, assuming you have a 'products' table and each cart item has a 'product_id' referencing a product:
+    $cartItemsWithProductInfo = Cart::where('customer_id', $customerId)
+                                     ->join('products', 'carts.product_id', '=', 'products.id')
+                                     ->select('carts.*', 'products.name', 'products.price')
+                                     ->get();
+
+    // Pass the cart items to the view
+    return view('cart.display_items', ['cartItems' => $cartItems]);
+}
+
     /**
      * Display a listing of the resource.
      */
@@ -70,7 +94,7 @@ class CartController extends Controller
         $cart->save();
 
         // Redirect to the home page with a success message
-        return redirect('/home')->with('success', 'Product added to cart successfully.');
+        return redirect('cart.display')->with('success', 'Product added to cart successfully.');
     }
 
     public function showAddToCartForm($productId)
@@ -104,3 +128,6 @@ class CartController extends Controller
         //
     }
 }
+
+
+//hi

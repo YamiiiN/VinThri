@@ -128,3 +128,7 @@ Route::get('/cart/input/{productId}', [CartController::class, 'showAddToCartForm
 // Route for processing the form submission
 Route::post('/cart/add', [CartController::class, 'create'])->name('cart.create');
 Route::post('/cart/store', [CartController::class, 'store'])->name('cart.store');
+
+Route::get('/cart/display', [CartController::class, 'display'])->name('cart.display');
+
+//hi
