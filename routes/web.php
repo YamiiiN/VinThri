@@ -11,6 +11,7 @@ use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\MainPageController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\GraphController;
 
 /*
 |--------------------------------------------------------------------------
@@ -98,3 +99,9 @@ Route::prefix('cart')->middleware(['auth', 'user-access:user'])->group(function 
     Route::post('/checkout', [CartController::class, 'checkout'])->name('checkout');
     Route::post('/delete/{productId}', [CartController::class, 'deleteCartItem'])->name('cart.delete');
 });
+
+
+//GRAPH
+Route::get('/orders-per-month', [GraphController::class, 'ordersPerMonth'])->name('orders.per.month');
+Route::get('/customers-per-month', [GraphController::class, 'customersPerMonth'])->name('customers.per.month');
+Route::get('/sales-per-month', [GraphController::class, 'salesPerMonth'])->name('sales.per.month');
