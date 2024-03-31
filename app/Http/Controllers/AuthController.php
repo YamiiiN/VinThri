@@ -43,39 +43,101 @@ class AuthController extends Controller
             'type' => "0", 
         ]);
 
+         // Validate customer data including images
         $customerData = $request->validate([
             'first_name' => 'required',
             'last_name' => 'required',
             'email' => 'required|email',
             'password' => 'required|confirmed',
             'address' => 'required|string',
-            'image.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048', 
+            'image.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Update to 'image.*' for multiple images
         ]);
-    
+        
+
+        // Create a new customer associated with the user
         $customer = $user->customer()->create([
             'first_name' => $customerData['first_name'],
             'last_name' => $customerData['last_name'],
             'email' => $customerData['email'],
             'password' => Hash::make($customerData['password']),
-            'type' => "0", 
+            'type' => "0", // Assuming type 0 represents a regular customer
             'address' => $customerData['address'],
-            'image' => '', 
+            'image' => '', // Initialize the image field with an empty string
         ]);
 
+        // Upload and save the images if they exist
         if ($request->hasFile('image')) {
             $imagePaths = [];
             foreach ($request->file('image') as $image) {
                 $imagePath = $image->store('productImages');
                 $imagePaths[] = $imagePath;
             }
-            $customer->image = implode(',', $imagePaths);
+            $customer->image = implode(',', $imagePaths); // Concatenate image paths into a comma-separated string
             $customer->save();
         }
 
-        $user->sendEmailVerificationNotification();
+         // Send email verification notification
+         $user->sendEmailVerificationNotification();
 
-        return view('auth/login');
+         return view('verification.notice');
     }
+    // public function registerSave(Request $request)
+    // {
+    //     // Validate user registration data
+    //     $userData = $request->validate([
+    //         'first_name' => 'required',
+    //         'last_name' => 'required',
+    //         'email' => 'required|email',
+    //         'password' => 'required|confirmed',
+    //     ]);
+
+    //     // Create a new user
+    //     $user = User::create([
+    //         'first_name' => $userData['first_name'],
+    //         'last_name' => $userData['last_name'],
+    //         'email' => $userData['email'],
+    //         'password' => Hash::make($userData['password']),
+    //         'type' => "0", // Assuming type 0 represents a regular user
+    //     ]);
+
+    //     // Validate customer data including images
+    //     $customerData = $request->validate([
+    //         'first_name' => 'required',
+    //         'last_name' => 'required',
+    //         'email' => 'required|email',
+    //         'password' => 'required|confirmed',
+    //         'address' => 'required|string',
+    //         'image.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Update to 'image.*' for multiple images
+    //     ]);
+        
+
+    //     // Create a new customer associated with the user
+    //     $customer = $user->customer()->create([
+    //         'first_name' => $customerData['first_name'],
+    //         'last_name' => $customerData['last_name'],
+    //         'email' => $customerData['email'],
+    //         'password' => Hash::make($customerData['password']),
+    //         'type' => "0", // Assuming type 0 represents a regular customer
+    //         'address' => $customerData['address'],
+    //         'image' => '', // Initialize the image field with an empty string
+    //     ]);
+
+    //     // Upload and save the images if they exist
+    //     if ($request->hasFile('image')) {
+    //         $imagePaths = [];
+    //         foreach ($request->file('image') as $image) {
+    //             $imagePath = $image->store('productImages');
+    //             $imagePaths[] = $imagePath;
+    //         }
+    //         $customer->image = implode(',', $imagePaths); // Concatenate image paths into a comma-separated string
+    //         $customer->save();
+    //     }
+
+    //     $user->sendEmailVerificationNotification();
+
+    //     return redirect()->route('verification.notice');
+        
+    // }
 
     public function verifyEmail(Request $request)
     {
@@ -104,7 +166,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         return view('auth/login');
-            
+
     }
 
     public function loginAction(Request $request)
