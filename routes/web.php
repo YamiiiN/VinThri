@@ -1,32 +1,18 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\ProductController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SupplierController;
-use App\Http\Controllers\AdminController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\MainPageController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\GraphController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
-
-// Route::get('/', function () {
-//     return view('home');
-// });
 Route::get('/', [MainPageController::class, 'welcome'])->name('welcome');
 
 Route::controller(AuthController::class)->group(function () {
@@ -41,7 +27,6 @@ Route::controller(AuthController::class)->group(function () {
 Route::middleware(['auth', 'user-access:user'])->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::get('/orderCustomer', [OrderController::class, 'viewOrders'])->name('orderCustomer.index');
-    // Route::get('/orderCustomer', [OrderController::class, 'showOrderItems'])->name('orderCustomer.indexItem');
 });
 
 // Admin Routes List
@@ -49,8 +34,6 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::get('/admin/home', [HomeController::class, 'adminHome'])->name('admin.home');
     Route::get('/orderAdmin', [AdminController::class, 'indexOrders'])->name('orderAdmin.index');
     Route::put('/orderAdmin/{orderId}', [AdminController::class, 'updateOrderStatus'])->name('admin.updateOrderStatus');
-
-    // Route::put('/orderAdmin/{order}', [AdminController::class, 'updateOrderStatus'])->name('admin.updateOrderStatus');
 });
 
 Route::prefix('product')->middleware(['auth', 'user-access:admin'])->group(function () {
@@ -82,13 +65,9 @@ Route::prefix('supplier')->middleware(['auth', 'user-access:admin'])->group(func
 
 Route::prefix('inventory')->middleware(['auth', 'user-access:admin'])->group(function () {
     Route::get('/', [InventoryController::class, 'index'])->name('inventory.index');
-    // Route::get('/create', [SupplierController::class, 'create'])->name('supplier.create');
-    // Route::post('/store', [SupplierController::class, 'store'])->name('supplier.store');
     Route::get('/edit/{inventory}', [InventoryController::class, 'edit'])->name('inventory.edit');
     Route::put('/update/{inventory}', [InventoryController::class, 'update'])->name('inventory.update');
-    // Route::delete('/destroy/{supplier}', [SupplierController::class, 'destroy'])->name('supplier.destroy');
 });
-
 
 //Add to cart
 Route::prefix('cart')->middleware(['auth', 'user-access:user'])->group(function () {
@@ -100,8 +79,27 @@ Route::prefix('cart')->middleware(['auth', 'user-access:user'])->group(function 
     Route::post('/delete/{productId}', [CartController::class, 'deleteCartItem'])->name('cart.delete');
 });
 
-
 //GRAPH
 Route::get('/orders-per-month', [GraphController::class, 'ordersPerMonth'])->name('orders.per.month');
 Route::get('/customers-per-month', [GraphController::class, 'customersPerMonth'])->name('customers.per.month');
 Route::get('/sales-per-month', [GraphController::class, 'salesPerMonth'])->name('sales.per.month');
+
+
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+ 
+    return redirect('/home');
+})->middleware(['auth', 'signed'])->name('verification.verify');
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+ 
+    return back()->with('message', 'Verification link sent!');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+ 
+    return back()->with('message', 'Verification link sent!');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');

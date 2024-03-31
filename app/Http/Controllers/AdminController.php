@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\Order;
+use App\Notifications\OrderPlacedNotification;
 
 class AdminController extends Controller
 {
@@ -69,25 +70,45 @@ class AdminController extends Controller
         //
     }
 
-    // public function updateOrderStatus(Order $order, $status)
-    // {
-    //     $order->update(['status' => $status]);
-    //     return redirect()->back()->with('success', 'Order status updated successfully.');
-    // }
-
     public function updateOrderStatus($orderId, Request $request)
     {
         $status = $request->input('status');
-    
+
         // Find the order by its ID
         $order = Order::findOrFail($orderId);
-    
+
         // Update the order status
         $order->update(['status' => $status]);
-    
+
+        // Send notification with PDF receipt only when the order is changed to 'delivered'
+        if ($status === 'delivered') {
+            $user = auth()->user();
+            $user->notify(new OrderPlacedNotification($order->generateReceiptPdf()));
+        }
+
         // Redirect back with a success message
         return redirect()->back()->with('success', 'Order status updated successfully.');
     }
+
+    // public function updateOrderStatus($orderId, Request $request)
+    // {
+    //     $status = $request->input('status');
+    
+    //     // Find the order by its ID
+    //     $order = Order::findOrFail($orderId);
+    
+    //     // Update the order status
+    //     $order->update(['status' => $status]);
+
+    //             // Send notification with PDF receipt only when the order is delivered
+    //             if ($order->status === 'delivered') {
+    //                 $user = auth()->user();
+    //                 $user->notify(new OrderPlacedNotification($order->generateReceiptPdf()));
+    //             }
+    
+    //     // Redirect back with a success message
+    //     return redirect()->back()->with('success', 'Order status updated successfully.');
+    // }
     
     public function indexOrders()
     {
