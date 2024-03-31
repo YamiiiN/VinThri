@@ -12,15 +12,16 @@
     <canvas id="customersChart" width="400" height="400"></canvas>
 
     <script>
-        var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        var months = {!! json_encode(array_keys($months)) !!};
         var ctx = document.getElementById('customersChart').getContext('2d');
+
         var myChart = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: months, // Use the months array for labels
+                labels: months,
                 datasets: [{
                     label: 'Customers Per Month',
-                    data: {!! json_encode(array_values($customersPerMonth)) !!},
+                    data: {!! json_encode(array_values($months)) !!},
                     fill: false,
                     borderColor: 'rgb(75, 192, 192)',
                     tension: 0.1

@@ -13,13 +13,15 @@
 
     <script>
         var ctx = document.getElementById('salesChart').getContext('2d');
+        var months = {!! json_encode(array_keys($months)) !!};
+
         var myChart = new Chart(ctx, {
             type: 'pie',
             data: {
-                labels: {!! json_encode(array_keys($salesPerMonth)) !!},
+                labels: months,
                 datasets: [{
                     label: 'Sales Per Month',
-                    data: {!! json_encode(array_values($salesPerMonth)) !!},
+                    data: {!! json_encode(array_values($months)) !!},
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(54, 162, 235, 0.2)',
