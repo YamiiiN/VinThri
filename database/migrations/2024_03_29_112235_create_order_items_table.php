@@ -14,12 +14,11 @@ return new class extends Migration
         Schema::create('order_items', function (Blueprint $table) {
             $table->bigIncrements('order_item_id'); 
             $table->string('quantity');
-            $table->timestamps();
-
             $table->unsignedBigInteger('order_id');
             $table->foreign('order_id')->references('order_id')->on('orders');
             $table->unsignedBigInteger('product_id');
             $table->foreign('product_id')->references('product_id')->on('products');
+            $table->timestamps();
         });
     }
 

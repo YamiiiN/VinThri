@@ -13,6 +13,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\GraphController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\OrderItemController;
+use App\Http\Controllers\FeedbackController;
 
 Route::get('/', [MainPageController::class, 'welcome'])->name('welcome');
 
@@ -27,8 +28,12 @@ Route::controller(AuthController::class)->group(function () {
 //Normal Users Routes List
 Route::middleware(['auth', 'user-access:user'])->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
+
     Route::get('/orderCustomer', [OrderController::class, 'viewOrders'])->name('orderCustomer.index');
     Route::get('/orderItems/{order_id}', [OrderItemController::class, 'index'])->name('orderItems.index');
+
+    Route::get('/feedback/create', [FeedbackController::class, 'create'])->name('feedback.create');
+    Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
 });
 
 // Admin Routes List
@@ -108,5 +113,3 @@ Route::post('/email/verification-notification', function (Request $request) {
  
     return back()->with('message', 'Verification link sent!');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
-
-
