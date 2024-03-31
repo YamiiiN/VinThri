@@ -12,6 +12,7 @@ use App\Http\Controllers\MainPageController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\GraphController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use App\Http\Controllers\OrderItemController;
 
 Route::get('/', [MainPageController::class, 'welcome'])->name('welcome');
 
@@ -27,6 +28,7 @@ Route::controller(AuthController::class)->group(function () {
 Route::middleware(['auth', 'user-access:user'])->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::get('/orderCustomer', [OrderController::class, 'viewOrders'])->name('orderCustomer.index');
+    Route::get('/orderItems/{order_id}', [OrderItemController::class, 'index'])->name('orderItems.index');
 });
 
 // Admin Routes List
@@ -88,18 +90,23 @@ Route::get('/sales-per-month', [GraphController::class, 'salesPerMonth'])->name(
 Route::get('/email/verify', function () {
     return view('auth.verify-email');
 })->middleware('auth')->name('verification.notice');
+
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill();
  
     return redirect('/home');
 })->middleware(['auth', 'signed'])->name('verification.verify');
+
 Route::post('/email/verification-notification', function (Request $request) {
     $request->user()->sendEmailVerificationNotification();
  
     return back()->with('message', 'Verification link sent!');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+
 Route::post('/email/verification-notification', function (Request $request) {
     $request->user()->sendEmailVerificationNotification();
  
     return back()->with('message', 'Verification link sent!');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+
+

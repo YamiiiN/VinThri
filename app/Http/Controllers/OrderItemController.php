@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\Customer;
 
 class OrderItemController extends Controller
 {
@@ -14,18 +15,17 @@ class OrderItemController extends Controller
      * Display a listing of the resource.
      */
 
-    //  public function showOrderItems($orderItemId)
-    // {
-    //     $orderItem = OrderItem::findOrFail($orderItemId);
-    //     $order = $orderItem->order;
-    //     $items = $orderItem->products; 
 
-    //     return view('orderCustomer.indexItem', compact('order', 'items'));
-    // }
-
-    public function index()
+    public function index($order_id)
     {
-        //
+        $customer = auth()->user()->customer;
+
+        $orders = $customer->orders;
+    
+        $orderItems = OrderItem::where('order_id', $order_id)->get();
+        
+        return view('orderCustomer.indexItem', compact('orderItems', 'order_id'));
+      
     }
 
     /**
