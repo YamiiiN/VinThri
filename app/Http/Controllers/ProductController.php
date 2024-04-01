@@ -141,37 +141,6 @@ class ProductController extends Controller
         return redirect()->route('product.index')->with('success', 'Product updated successfully');
     }
 
-    // public function update(Request $request, Product $product)
-    // {
-    //     $request->validate([
-    //         'name' => 'required',
-    //         'description' => 'required',
-    //         'unit_price' => 'required',
-    //         'category_id' => 'required'
-    //     ]);
-
-    //     $product->name = $request->name;
-    //     $product->description = $request->description;
-    //     $product->unit_price = $request->unit_price;
-    //     $product->category_id = $request->category_id;
-
-    //     if ($request->hasFile('image')) {
-    //         $image = $request->file('image');
-    //         $imageName = time() . '.' . $image->extension();
-    //         $image->move(public_path('productImages'), $imageName);
-
-    //         if ($product->image && file_exists(public_path('productImages/' . $product->image))) {
-    //             unlink(public_path('productImages/' . $product->image));
-    //         }
-
-    //         $product->image = $imageName;
-    //     }
-
-    //     $product->save();
-
-    //     return redirect()->route('product.index')->with('success', 'Product updated successfully');
-    // }
-
     /**
      * Remove the specified resource from storage.
      */
@@ -180,5 +149,13 @@ class ProductController extends Controller
         $product->delete();
         return redirect()->route('product.index')->with('success', 'Product deleted successfully');
     }
+
+    public function searchProduct(Request $request)
+    {
+        $query = $request->input('query');
+        $products = Product::where('name', 'like', '%' . $query . '%')->get();
+        $inventories = Inventory::all();
+        return view('product.searchProduct', compact('products', 'query', 'inventories'));
+    }
+
 }
-//hi

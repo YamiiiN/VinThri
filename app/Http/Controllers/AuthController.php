@@ -79,66 +79,9 @@ class AuthController extends Controller
          // Send email verification notification
          $user->sendEmailVerificationNotification();
 
-         return view('verification.notice');
+        return view('auth/login');
     }
-    // public function registerSave(Request $request)
-    // {
-    //     // Validate user registration data
-    //     $userData = $request->validate([
-    //         'first_name' => 'required',
-    //         'last_name' => 'required',
-    //         'email' => 'required|email',
-    //         'password' => 'required|confirmed',
-    //     ]);
-
-    //     // Create a new user
-    //     $user = User::create([
-    //         'first_name' => $userData['first_name'],
-    //         'last_name' => $userData['last_name'],
-    //         'email' => $userData['email'],
-    //         'password' => Hash::make($userData['password']),
-    //         'type' => "0", // Assuming type 0 represents a regular user
-    //     ]);
-
-    //     // Validate customer data including images
-    //     $customerData = $request->validate([
-    //         'first_name' => 'required',
-    //         'last_name' => 'required',
-    //         'email' => 'required|email',
-    //         'password' => 'required|confirmed',
-    //         'address' => 'required|string',
-    //         'image.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Update to 'image.*' for multiple images
-    //     ]);
-
-
-    //     // Create a new customer associated with the user
-    //     $customer = $user->customer()->create([
-    //         'first_name' => $customerData['first_name'],
-    //         'last_name' => $customerData['last_name'],
-    //         'email' => $customerData['email'],
-    //         'password' => Hash::make($customerData['password']),
-    //         'type' => "0", // Assuming type 0 represents a regular customer
-    //         'address' => $customerData['address'],
-    //         'image' => '', // Initialize the image field with an empty string
-    //     ]);
-
-    //     // Upload and save the images if they exist
-    //     if ($request->hasFile('image')) {
-    //         $imagePaths = [];
-    //         foreach ($request->file('image') as $image) {
-    //             $imagePath = $image->store('productImages');
-    //             $imagePaths[] = $imagePath;
-    //         }
-    //         $customer->image = implode(',', $imagePaths); // Concatenate image paths into a comma-separated string
-    //         $customer->save();
-    //     }
-
-    //     $user->sendEmailVerificationNotification();
-
-    //     return redirect()->route('verification.notice');
-
-    // }
-
+    
     public function verifyEmail(Request $request)
     {
         if ($request->route('id') == $request->user()->getKey() &&
@@ -169,15 +112,6 @@ class AuthController extends Controller
 
     }
 
-    public function logout(Request $request)
-    {
-        Auth::guard('web')->logout();
-
-        $request->session()->invalidate();
-
-        return redirect('/login');
-    }
-
     public function loginAction(Request $request)
     {
         Validator::make($request->all(), [
@@ -189,6 +123,35 @@ class AuthController extends Controller
             throw ValidationException::withMessages([
                 'email' => trans('auth.failed'),
             ]);
+        }
+
+        $loggedInUser = auth()->user();
+
+        if (!$loggedInUser->hasVerifiedEmail()) {
+            return view('verification.notice');
+        }
+
+        $request->session()->regenerate();
+
+        if ($loggedInUser->type == 'admin') {
+            
+            $existingAdmin = Admin::where('email', $loggedInUser->email)->first();
+
+            if (!$existingAdmin) {
+                Admin::create([
+                    'first_name' => $loggedInUser->first_name,
+                    'last_name' => $loggedInUser->last_name,
+                    'image' => null,
+                    'address' => null,
+                    'email' => $loggedInUser->email,
+                    'password' => $loggedInUser->password,
+                    'user_id' => $loggedInUser->user_id,
+                ]);
+            }
+
+            return redirect()->route('admin.home');
+        } else {
+            return redirect()->route('home');
         }
 
         $user = Auth::user();
@@ -205,7 +168,16 @@ class AuthController extends Controller
         // Redirect to intended page after successful login
         return redirect()->intended('/home');
     }
-        }
+
+    public function logout(Request $request)
+    {
+        Auth::guard('web')->logout();
+
+        $request->session()->invalidate();
+
+        return redirect('/login');
+    }
+}
 
         // // Redirect based on the user's type or other logic
         // if ($loggedInUser->type == 'admin') {
@@ -213,7 +185,3 @@ class AuthController extends Controller
         // } else {
         //     return redirect()->route('home');
         // }
-
-
-
-

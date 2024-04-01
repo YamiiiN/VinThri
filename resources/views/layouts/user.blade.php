@@ -35,10 +35,22 @@
                         <div class="ml-4 flex items-center md:ml-6">
                             @if (Route::has('login'))
                             @auth
+                            <div x-data="{showSearch: false}">
+                                <button @click="showSearch = !showSearch" class="ml-4 bg-gray-800 p-1 rounded-full text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                                    <i class="bi bi-search"></i>
+                                </button>
+                                <div x-show="showSearch" @click.away="showSearch = false" class="left-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                    <form action="{{ route('product.search') }}" method="GET">
+                                        <input type="text" name="query" placeholder="Search products..." class="block w-full px-4 py-2 text-gray-900 placeholder-gray-500 focus:outline-none" />
+                                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300">Search</button>
+                                    </form>
+                                </div>
+                            </div>
+
                             <button id="cartButton" class="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
                                 <i class='bx bx-cart'></i> Cart
                             </button>
-
+                                                        
                           
                             
                             <!-- Profile dropdown -->
@@ -54,9 +66,6 @@
                                 <div x-show="show" class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
                                     <a href="" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Profile</a>
                                     <a href="{{ route('orderCustomer.index') }}" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">Orders</a>
-
-                                   
- 
                                     <a href="{{ route('logout') }}" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-2">Sign out</a>
                                 </div>
                             </div>

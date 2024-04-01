@@ -29,10 +29,7 @@
                             <td>
                                 <form action="" method="POST">
                                     @csrf
-                                    @method('DELETE')
                                     <a class="btn btn-primary" href="{{ route('orderItems.index', ['order_id' => $order->order_id]) }}">View Items</a>
-
-                                    <button type="submit" class="btn btn-danger">Delete</button>
 
                                     @if ($order->status === 'delivered')
                                         <a href="{{ route('orderItems.index', ['order_id' => $order->order_id]) }}" class="btn btn-success">Feedback</a>

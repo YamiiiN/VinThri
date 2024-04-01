@@ -35,7 +35,6 @@
                         </div>
                         <div class="mt-2">
                             <p class="text-sm text-gray-700">Available Stock: {{ $inventory->stock }}</p>
-
                         </div>
                        <a href="{{ route('cart.show_add_form', ['productId' => $inventory->product_id]) }}" class="inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300">Add to Cart</a>
 
@@ -46,5 +45,3 @@
     </div>
 </main>
 @endsection
-
- <!-- hi -->

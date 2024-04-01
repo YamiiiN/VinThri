@@ -45,7 +45,7 @@ class FeedbackController extends Controller
             'images.*' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'comment' => 'required|string',
         ]);
-     
+ 
         $orderItem = OrderItem::findOrFail($validatedData['order_item_id']);
          
         $order = $orderItem->order;

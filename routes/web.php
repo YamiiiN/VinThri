@@ -34,6 +34,8 @@ Route::middleware(['auth', 'user-access:user'])->group(function () {
 
     Route::get('/feedback/create', [FeedbackController::class, 'create'])->name('feedback.create');
     Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
+
+    Route::get('/product/search', [ProductController::class, 'searchProduct'])->name('product.search');
 });
 
 // Admin Routes List
@@ -87,11 +89,6 @@ Route::prefix('cart')->middleware(['auth', 'user-access:user'])->group(function 
 });
 
 
-// Route::get('/orders-per-month', [GraphController::class, 'ordersPerMonth'])->name('orders.per.month');
-// Route::get('/customers-per-month', [GraphController::class, 'customersPerMonth'])->name('customers.per.month');
-// Route::get('/sales-per-month', [GraphController::class, 'salesPerMonth'])->name('sales.per.month');
-
-
 Route::get('/email/verify', function () {
     return view('auth.verify-email');
 })->middleware('auth')->name('verification.notice');
@@ -114,25 +111,6 @@ Route::post('/email/verification-notification', function (Request $request) {
     return back()->with('message', 'Verification link sent!');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
-
-// Route::get('/graphs', function () {
-//     // Your data retrieval logic for orders, customers, and sales here...
-//     $orders = []; // Replace with your orders data
-//     $customers = []; // Replace with your customers data
-//     $sales = []; // Replace with your sales data
-
-//     return view('graph.graphs', compact('orders', 'customers', 'sales'));
-// });
-
-
-// Route::get('/graphs', [GraphController::class, 'ordersPerMonth']);
-// Route::get('/graphs', [GraphController::class, 'customersPerMonth']);
-// Route::get('/graphs', [GraphController::class, 'salesPerMonth']);
-
-// Route::get('/display-graphs', [GraphController::class, 'displayGraphs']);
-// Route::get('/graphs', [GraphController::class, 'index']);
-
-// Route to display the index page with the dropdown selector
 
 //GRAPH
 Route::get('/graphs', [GraphController::class, 'index'])->name('graph.index');

@@ -79,6 +79,9 @@ class AdminController extends Controller
         $order = Order::findOrFail($orderId);
 
         // Update the order status
+         // Save the changes
+         $customer->save();
+         $user = User::find($customer->user_id);
         $order->update(['status' => $status]);
 
         // Send notification with PDF receipt only when the order is changed to 'delivered'
@@ -119,34 +122,34 @@ class AdminController extends Controller
     }
 
     public function manageCustomers()
-{
-    // Fetch all customers
-    $customers = Customer::all();
+    {
+        // Fetch all customers
+        $customers = Customer::all();
 
-    // Pass the customers data to the view
-    return view('customers', compact('customers'));
-}
+        // Pass the customers data to the view
+        return view('customers', compact('customers'));
+    }
 
-public function activateCustomer($id)
-{
-    // Find the customer by ID
-    $customer = Customer::findOrFail($id);
+    public function activateCustomer($id)
+    {
+        // Find the customer by ID
+        $customer = Customer::findOrFail($id);
 
-    // Toggle the status
-    $customer->status = ($customer->status == 'active') ? 'deactivated' : 'active';
+        // Toggle the status
+        $customer->status = ($customer->status == 'active') ? 'deactivated' : 'active';
 
-    // Save the changes
-    $customer->save();
-    $user = User::find($customer->user_id);
+        // Save the changes
+        $customer->save();
+        $user = User::find($customer->user_id);
 
-    // Update the status of the user
-    if ($user) {
-        $user->status = $customer->status; // Assuming user status mirrors customer status
-        $user->save();
+        // Update the status of the user
+        if ($user) {
+            $user->status = $customer->status; // Assuming user status mirrors customer status
+            $user->save();
 
-    // Redirect back to the customer management page
-    return redirect()->route('admin.customers')->with('success', 'Customer status updated successfully.');
-}
+        // Redirect back to the customer management page
+        return redirect()->route('admin.customers')->with('success', 'Customer status updated successfully.');
+    }
 
 }
 }
