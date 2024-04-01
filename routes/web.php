@@ -81,10 +81,10 @@ Route::prefix('cart')->middleware(['auth', 'user-access:user'])->group(function 
     Route::post('/delete/{productId}', [CartController::class, 'deleteCartItem'])->name('cart.delete');
 });
 
-//GRAPH
-Route::get('/orders-per-month', [GraphController::class, 'ordersPerMonth'])->name('orders.per.month');
-Route::get('/customers-per-month', [GraphController::class, 'customersPerMonth'])->name('customers.per.month');
-Route::get('/sales-per-month', [GraphController::class, 'salesPerMonth'])->name('sales.per.month');
+
+// Route::get('/orders-per-month', [GraphController::class, 'ordersPerMonth'])->name('orders.per.month');
+// Route::get('/customers-per-month', [GraphController::class, 'customersPerMonth'])->name('customers.per.month');
+// Route::get('/sales-per-month', [GraphController::class, 'salesPerMonth'])->name('sales.per.month');
 
 
 Route::get('/email/verify', function () {
@@ -93,20 +93,45 @@ Route::get('/email/verify', function () {
 
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill();
- 
+
     return redirect('/home');
 })->middleware(['auth', 'signed'])->name('verification.verify');
 
 Route::post('/email/verification-notification', function (Request $request) {
     $request->user()->sendEmailVerificationNotification();
- 
+
     return back()->with('message', 'Verification link sent!');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 Route::post('/email/verification-notification', function (Request $request) {
     $request->user()->sendEmailVerificationNotification();
- 
+
     return back()->with('message', 'Verification link sent!');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 
+// Route::get('/graphs', function () {
+//     // Your data retrieval logic for orders, customers, and sales here...
+//     $orders = []; // Replace with your orders data
+//     $customers = []; // Replace with your customers data
+//     $sales = []; // Replace with your sales data
+
+//     return view('graph.graphs', compact('orders', 'customers', 'sales'));
+// });
+
+
+// Route::get('/graphs', [GraphController::class, 'ordersPerMonth']);
+// Route::get('/graphs', [GraphController::class, 'customersPerMonth']);
+// Route::get('/graphs', [GraphController::class, 'salesPerMonth']);
+
+// Route::get('/display-graphs', [GraphController::class, 'displayGraphs']);
+// Route::get('/graphs', [GraphController::class, 'index']);
+
+// Route to display the index page with the dropdown selector
+
+//GRAPH
+Route::get('/graphs', [GraphController::class, 'index'])->name('graph.index');
+
+//ACTIVATE || DEACTIVATE CUSTOMER ACCOUNT
+Route::get('/admin/customers', [AdminController::class, 'manageCustomers'])->name('admin.customers');
+    Route::post('/admin/customers/{id}/activate', [AdminController::class, 'activateCustomer'])->name('admin.activateCustomer');
