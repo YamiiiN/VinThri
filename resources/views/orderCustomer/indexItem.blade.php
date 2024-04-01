@@ -35,10 +35,14 @@
                             <td>{{ $orderItem->product->unit_price }}</td>
                             <td>{{ $orderItem->product->unit_price * $orderItem->quantity }}</td>
                             <td>
-                                <form action="" method="POST">
-                                    <a class="btn btn-primary" href="">Feedback</a>
-                                </form>
-                            </td>
+                                @if($orderItem->order->status == 'delivered')
+                                    <form action="{{ route('feedback.create') }}" method="GET">
+                                        @csrf
+                                        <input type="hidden" name="order_item_id" value="{{ $orderItem->order_item_id }}">
+                                        <button type="submit" class="btn btn-primary">Feedback</button>
+                                    </form>
+                                @endif
+                            </td>                  
                         </tr>
                     @endforeach
                 </tbody>

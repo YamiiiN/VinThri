@@ -28,7 +28,6 @@ class AuthController extends Controller
 
     public function registerSave(Request $request)
     {
-        // Validate user registration data
         $userData = $request->validate([
             'first_name' => 'required',
             'last_name' => 'required',
@@ -36,52 +35,51 @@ class AuthController extends Controller
             'password' => 'required|confirmed',
         ]);
 
-        // Create a new user
         $user = User::create([
             'first_name' => $userData['first_name'],
             'last_name' => $userData['last_name'],
             'email' => $userData['email'],
             'password' => Hash::make($userData['password']),
-            'type' => "0", // Assuming type 0 represents a regular user
+            'type' => "0",
         ]);
 
-    // Validate customer data including images
-$customerData = $request->validate([
-    'first_name' => 'required',
-    'last_name' => 'required',
-    'email' => 'required|email',
-    'password' => 'required|confirmed',
-    'address' => 'required|string',
-    'image.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Update to 'image.*' for multiple images
-]);
+         // Validate customer data including images
+        $customerData = $request->validate([
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|confirmed',
+            'address' => 'required|string',
+            'image.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Update to 'image.*' for multiple images
+        ]);
 
-// Create a new customer associated with the user
-$customer = $user->customer()->create([
-    'first_name' => $customerData['first_name'],
-    'last_name' => $customerData['last_name'],
-    'email' => $customerData['email'],
-    'password' => Hash::make($customerData['password']),
-    'type' => "0", // Assuming type 0 represents a regular customer
-    'address' => $customerData['address'],
-    'image' => '', // Initialize the image field with an empty string
-]);
 
-// Upload and save the images if they exist
-if ($request->hasFile('image')) {
-    $imagePaths = [];
-    foreach ($request->file('image') as $image) {
-        $imageName = basename($image->getClientOriginalName());
-        $image->move(public_path('productImages'), $imageName);
-        $imagePaths[] = 'productImages/' . $imageName; // Store the path relative to public directory
-    }
-    $customer->image = implode(',', $imagePaths); // Concatenate image paths into a comma-separated string
-    $customer->save();
-}
+        // Create a new customer associated with the user
+        $customer = $user->customer()->create([
+            'first_name' => $customerData['first_name'],
+            'last_name' => $customerData['last_name'],
+            'email' => $customerData['email'],
+            'password' => Hash::make($customerData['password']),
+            'type' => "0", // Assuming type 0 represents a regular customer
+            'address' => $customerData['address'],
+            'image' => '', // Initialize the image field with an empty string
+        ]);
 
-// Send email verification notification
-$user->sendEmailVerificationNotification();
+        // Upload and save the images if they exist
+        if ($request->hasFile('image')) {
+            $imagePaths = [];
+            foreach ($request->file('image') as $image) {
+                $imagePath = $image->store('productImages');
+                $imagePaths[] = $imagePath;
+            }
+            $customer->image = implode(',', $imagePaths); // Concatenate image paths into a comma-separated string
+            $customer->save();
+        }
 
-return view('verification.notice');
+         // Send email verification notification
+         $user->sendEmailVerificationNotification();
+
+         return view('verification.notice');
     }
     // public function registerSave(Request $request)
     // {
@@ -164,7 +162,8 @@ return view('verification.notice');
         return back()->with('message', 'Verification link sent!');
     }
 
-    public function login()
+
+    public function login(Request $request)
     {
         return view('auth/login');
 

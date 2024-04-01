@@ -29,4 +29,9 @@ class Customer extends Model
     {
         return $this->hasMany(Order::class, 'customer_id');
     }
+
+    public function feedback()
+    {
+        return $this->hasMany(Feedback::class, 'customer_id');
+    }
 }
