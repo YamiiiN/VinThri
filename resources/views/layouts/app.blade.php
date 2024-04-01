@@ -188,25 +188,25 @@
 				</a>
 			</li>
 			<li>
-				<a href="#">
+				<a href="{{ route('inventory.index') }}">
 					<i class='bx bxs-archive'></i>
 					<span class="text">Inventory</span>
 				</a>
 			</li>
 			<li>
-				<a href="#">					
+				<a href="{{ route('supplier.index') }}">					
 					<i class='bx bxs-group' ></i>
 					<span class="text">Supplier</span>
 				</a>
 			</li>
-		</ul><br>
-		<ul class="side-menu">
 			<li>
-				<a href="#">
-					<i class='bx bxs-cog' ></i>
-					<span class="text">Settings</span>
+				<a href="{{ route('admin.index') }}">					
+					<i class='bx bxs-user-pin'></i>
+					<span class="text">Admins</span>
 				</a>
 			</li>
+		</ul><br>
+		<ul class="side-menu">
 			<li>
 				<a href="{{ route('logout') }}" class="logout">
 					<i class='bx bxs-log-out-circle' ></i>
@@ -237,7 +237,7 @@
 				<i class='bx bxs-bell' ></i>
 				<!-- <span class="num">8</span> -->
 			</a>
-			<a href="#" class="profile">
+			<a href="{{ route('admin.index') }}" class="profile">
 				<!-- LAGYAN NG PROFILE DITO NG ADMIN -->
 				<img src="https://i.ibb.co/2q4tcvL/64572.png">
 			</a>

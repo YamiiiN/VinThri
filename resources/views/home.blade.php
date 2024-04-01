@@ -13,8 +13,7 @@
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700,800,900&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
 
     <!-- Css Styles -->
     <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
@@ -25,6 +24,46 @@
     <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="css/style.css" type="text/css">
 </head>
+
+<style>
+    .btn {
+        background-color: #A9B388;
+        color: #FEFAE0;
+    }
+    .btn.hover {
+        background-color: #FEFAE0;
+        color: #A9B388;
+    }
+    .add-to-cart-btn {
+        display: block;
+        margin: auto;
+    }
+    /* .shadow-sm {
+        background-color: #5F6F52;
+    } */
+    .primary-btn:hover {
+        background-color: #FEFAE0; 
+        color: #5F6F52;
+    }
+    .features-ads .single-features-ads {
+    padding: 30px;
+    border: 1px solid #ebebeb;
+    text-align: center; /* Center align content */
+}
+
+.features-ads .single-features-ads h4 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.features-ads .single-features-ads p {
+    font-size: 16px;
+    color: #777;
+    line-height: 1.7;
+    text-align: justify;
+}
+</style>
 
 <body style="background-color: #FEFAE0;">
     <!-- Page Preloder -->
@@ -66,18 +105,17 @@
                     <ul>
                         <li><a class="active" href="">Home</a></li>
                         <li><a href="{{url('/shop')}}">Shop</a>
-                            <ul class="sub-menu">
+                            <!-- <ul class="sub-menu">
                                 <li><a href="">Tops/ Shirts</a></li>
                                 <li><a href="">Bags</a></li>
                                 <li><a href="">Short/ Pants</a></li>
-                            </ul>
+                            </ul> -->
                         </li>
                         <li><a href="./product-page.html">Reviews</a></li>
                         <li><a href="./check-out.html">About</a></li>
                     </ul>
                 </nav>
             </div>
-        </div>
     </header>
     <!-- Header End -->
 
@@ -94,134 +132,80 @@
                     </div>
                 </div>
             </div>
-
     </section>
-    <!-- Hero Slider End -->
-
-    <!-- Features Section Begin -->
     <section class="features-section spad">
-        <!-- Features Box -->
-        <div class="features-box">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="single-box-item first-box">
-                                    <img src="img/f-box-1.jpg" alt="">
-                                    <div class="box-text">
-                                        <span class="trend-year">2019 Party</span>
-                                        <h2>Jewelry</h2>
-                                        <span class="trend-alert">Trend Allert</span>
-                                        <a href="#" class="primary-btn">See More</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="single-box-item second-box">
-                                    <img src="img/f-box-2.jpg" alt="">
-                                    <div class="box-text">
-                                        <span class="trend-year">2019 Trend</span>
-                                        <h2>Footwear</h2>
-                                        <span class="trend-alert">Bold & Black</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="single-box-item large-box">
-                            <img src="img/f-box-3.jpg" alt="">
-                            <div class="box-text">
-                                <span class="trend-year">2019 Party</span>
-                                <h2>Collection</h2>
-                                <div class="trend-alert">Trend Allert</div>
-                            </div>
-                        </div>
+    <div class="container"> <!-- Added container -->
+        <div class="features-ads">
+            <div class="row justify-content-center"> <!-- Center align row -->
+                <div class="col-lg-8">
+                    <div class="single-features-ads first">
+                        <h4 class="text-center">WALA AKO MAISIP</h4> <!-- Center align heading -->
+                        <p class="text-justify"> <!-- Justify text -->
+                            Fusce urna quam, euismod sit amet mollis quis, vestibulum quis velit. Vestibulum malesuada aliquet libero viverra cursus.
+                            Fusce urna quam, euismod sit amet mollis quis, vestibulum quis velit. Vestibulum malesuada aliquet libero viverra cursus.
+                            Fusce urna quam, euismod sit amet mollis quis, vestibulum quis velit. Vestibulum malesuada aliquet libero viverra cursus.
+                            Fusce urna quam, euismod sit amet mollis quis, vestibulum quis velit. Vestibulum malesuada aliquet libero viverra cursus.
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
-    <!-- Features Section End -->
+    </div>
+</section>
 
-    <!-- Latest Product Begin -->
+    <!-- Hero Slider End -->
     <section class="latest-products spad">
         <div class="container">
             <div class="product-filter">
                 <div class="row">
                     <div class="col-lg-12 text-center">
                         <div class="section-title">
-                            <h2>Latest Products</h2>
-                        </div>
-                        <ul class="product-controls">
-                            <li data-filter="*">All</li>
-                            <li data-filter=".dresses">Dresses</li>
-                            <li data-filter=".bags">Bags</li>
-                            <li data-filter=".shoes">Shoes</li>
-                            <li data-filter=".accesories">Accesories</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="row" id="product-list">
-                <div class="col-lg-3 col-sm-6 mix all dresses bags">
-                    <div class="single-product-item">
-                        <figure>
-                            <a href="#"><img src="img/products/img-1.jpg" alt=""></a>
-                            <div class="p-status">new</div>
-                        </figure>
-                        <div class="product-text">
-                            <h6>Green Dress with details</h6>
-                            <p>$22.90</p>
+                            <h2 style="color: #5F6F52;">PRODUCTS</h2>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-sm-6 mix all dresses bags">
-                    <div class="single-product-item">
-                        <figure>
-                            <a href="#"><img src="img/products/img-2.jpg" alt=""></a>
-                            <div class="p-status sale">sale</div>
-                        </figure>
-                        <div class="product-text">
-                            <h6>Yellow Maxi Dress</h6>
-                            <p>$25.90</p>
+
+<div class="single-product-item">
+    <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            @foreach($inventories as $inventory)
+                <div class="overflow-hidden shadow-sm sm:rounded-lg" width="500px" height="350">
+                    <div class="p-6" style="background-color: #FEFAE0;">
+                        <div class="mt-2">
+                            @php
+                            $images = explode(',', $inventory->product->images);
+                            @endphp
+                            @foreach ($images as $image)
+                            <img src="/productImages/{{ $image }}" width="200px" style="margin-right: 20px;">
+                            @endforeach
                         </div>
+                        <div class="flex justify-center items-center">
+                            <h6 class="product-text mt-2 font-weight-bold" style="color: #5F6F52; text-align: center;">{{ $inventory->product->name }}</h6>
+                        </div>
+                        <div class="flex justify-center items-center">
+                            <p class="product-text" style="color: #B99470; text-align: center;">₱{{ $inventory->product->unit_price }}</p>
+                        </div>
+
+                        <div>
+                        @if($inventory->stock == 0)
+                            <p class="text-danger text-center">Out of Stock</p>
+                        @else
+                            <p class="text-success text-center">In Stock</p>
+                        @endif
+                        </div>
+                        <a href="{{ route('cart.show_add_form', ['productId' => $inventory->product_id]) }}" class="primary-btn pc-btn add-to-cart-btn text-center" style="background-color: #A9B388;">Add to Cart</a>
                     </div>
                 </div>
-                <div class="col-lg-3 col-sm-6 mix all shoes accesories">
-                    <div class="single-product-item">
-                        <figure>
-                            <a href="#"><img src="img/products/img-3.jpg" alt=""></a>
-                            <div class="p-status">new</div>
-                        </figure>
-                        <div class="product-text">
-                            <h6>One piece bodysuit</h6>
-                            <p>$19.90</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6 mix all shoes accesories">
-                    <div class="single-product-item">
-                        <figure>
-                            <a href="#"><img src="img/products/img-4.jpg" alt=""></a>
-                            <div class="p-status popular">popular</div>
-                        </figure>
-                        <div class="product-text">
-                            <h6>Blue Dress with details</h6>
-                            <p>$35.50</p>
-                        </div>
-                    </div>
-                </div>
-                
-            </div>
+            @endforeach
         </div>
-    </section>
+    </div>
+</div>
+</section>
     <!-- Latest Product End -->
 
     <!-- Footer Section Begin -->
     <footer>
-    <div class="social-links-warp container text-center pt-5">
+    <div class="social-links-warp text-center pt-5">
         <p style="color: #FEFAE0;"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
         Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved.
         </p>
@@ -240,4 +224,7 @@
     <script src="js/mixitup.min.js"></script>
     <script src="js/main.js"></script>
 </body>
+</main>
 @endsection
+
+ <!-- hi -->

@@ -56,20 +56,28 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Category $category_id)
+    public function edit($category_id)
     {
-        //
-        $category = Product::find($category_id);
-
-        return view('category.edit', compact('categories'));
+        $category = Category::find($category_id);
+        return view('category.edit', compact('category'));
     }
-
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, Category $category)
     {
         //
+        $request->validate([
+            'name' => 'required',
+            'description' => 'required',
+        ]);
+    
+        $category->name = $request->name;
+        $category->description = $request->description;
+
+        $category->save();
+    
+        return redirect()->route('category.index')->with('success', 'Category updated successfully');
     }
 
     /**
@@ -78,5 +86,7 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         //
+        $category->delete();
+        return redirect()->route('category.index')->with('success', 'Category deleted successfully');
     }
 }
