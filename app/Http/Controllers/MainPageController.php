@@ -14,7 +14,7 @@ class MainPageController extends Controller
         $products = Product::all();
         $inventories = Inventory::all();
 
-        return view('welcome', compact('inventories'));
+        return view('home', compact('inventories'));
         // return view('home');
     }
 }

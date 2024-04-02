@@ -66,65 +66,14 @@
 </style>
 
 <body style="background-color: #FEFAE0;">
-    <!-- Page Preloder -->
-    <div id="preloder">
-        <div class="loader"></div>
-    </div>
-    
-    <!-- Search model -->
-	<div class="search-model">
-		<div class="h-100 d-flex align-items-center justify-content-center">
-			<div class="search-close-switch">+</div>
-			<form class="search-model-form">
-				<input type="text" id="search-input" placeholder="Search here">
-			</form>
-		</div>
-	</div>
-	<!-- Search model end -->
 
-    <!-- Header Section Begin -->
-    <header class="header-section">
-        <div class="container-fluid">
-            <div class="inner-header">
-                <div class="logo">
-                    <a href=""><img src="img/VINTHRI.png" width=150 height=150 alt=""></a>
-                </div>
-                <div class="header-right">
-                    <img src="img/icons/search.png" alt="" class="search-trigger" style="margin-right: 5px;">
-                    <a href="{{ url('/home') }}"> <img src="img/icons/man.png" alt="" style="margin-right: 5px;"> </a>
-                    <a href="{{ url('/home') }}">
-                        <img src="img/icons/bag.png" alt="">
-                        <!-- <span>2</span> -->
-                    </a>
-                </div>
-                <!-- <div class="user-access">
-                    <a href="#">Register</a>
-                    <a href="#" class="in">Sign in</a>
-                </div> -->
-                <nav class="main-menu mobile-menu">
-                    <ul>
-                        <li><a class="active" href="">Home</a></li>
-                        <li><a href="{{url('/shop')}}">Shop</a>
-                            <!-- <ul class="sub-menu">
-                                <li><a href="">Tops/ Shirts</a></li>
-                                <li><a href="">Bags</a></li>
-                                <li><a href="">Short/ Pants</a></li>
-                            </ul> -->
-                        </li>
-                        <li><a href="./product-page.html">Reviews</a></li>
-                        <li><a href="./check-out.html">About</a></li>
-                    </ul>
-                </nav>
-            </div>
-    </header>
-    <!-- Header End -->
 
     <!-- Hero Slider Begin -->
     <section class="hero-slider">
             <div class="single-slider-item set-bg" data-setbg="img/home_slider.jpg">
                 <div class="container">
                     <div class="row">
-                        <div class="col-lg-12">
+                        <div class="col-lg-12 ml-5">
                             <h1>VINTAGE</h1>
                             <h2>Thrift.</h2>
                             <a href="#" class="primary-btn">See More</a>
@@ -189,11 +138,12 @@
                         <div>
                         @if($inventory->stock == 0)
                             <p class="text-danger text-center">Out of Stock</p>
+                            <button class="primary-btn pc-btn add-to-cart-btn text-center" style="background-color: #A9B388;" height="30px" disabled>Add to Cart</button>
                         @else
                             <p class="text-success text-center">In Stock</p>
+                            <a href="{{ route('cart.show_add_form', ['productId' => $inventory->product_id]) }}" class="primary-btn pc-btn add-to-cart-btn text-center" style="background-color: #A9B388;" height="30px">Add to Cart</a>
                         @endif
                         </div>
-                        <a href="{{ route('cart.show_add_form', ['productId' => $inventory->product_id]) }}" class="primary-btn pc-btn add-to-cart-btn text-center" style="background-color: #A9B388;">Add to Cart</a>
                     </div>
                 </div>
             @endforeach
@@ -226,5 +176,3 @@
 </body>
 </main>
 @endsection
-
- <!-- hi -->

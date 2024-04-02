@@ -54,8 +54,6 @@
                             @csrf
                             @method('DELETE')
                             <a class="btn btn-primary" href="{{ route('product.edit', $productSupplier->product->product_id) }}">Edit</a>
-
-
                            
                             <button type="submit" class="btn btn-danger">Delete</button>
                         </form>
