@@ -73,7 +73,7 @@
             <div class="single-slider-item set-bg" data-setbg="img/home_slider.jpg">
                 <div class="container">
                     <div class="row">
-                        <div class="col-lg-12 ml-5">
+                        <div class="col-lg-12">
                             <h1>VINTAGE</h1>
                             <h2>Thrift.</h2>
                             <a href="#" class="primary-btn">See More</a>
@@ -147,6 +147,7 @@
                     </div>
                 </div>
             @endforeach
+
         </div>
     </div>
 </div>
