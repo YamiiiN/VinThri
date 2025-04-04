@@ -67,6 +67,8 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::get('/admin/home', [HomeController::class, 'adminHome'])->name('admin.home');
     Route::get('/orderAdmin', [AdminController::class, 'indexOrders'])->name('orderAdmin.index');
     Route::put('/orderAdmin/{orderId}', [AdminController::class, 'updateOrderStatus'])->name('admin.updateOrderStatus');
+    // Route::get('/graphs', [GraphController::class, 'index'])->name('graph.index');
+    Route::get('/graphs', [GraphController::class, 'index'])->name('graphs.index');
 });
 
 Route::prefix('product')->middleware(['auth', 'user-access:admin'])->group(function () {
@@ -137,7 +139,7 @@ Route::post('/email/verification-notification', function (Request $request) {
 
 
 //GRAPH
-Route::get('/graphs', [GraphController::class, 'index'])->name('graph.index');
+// Route::get('/graphs', [GraphController::class, 'index'])->name('graph.index');
 
 //ACTIVATE || DEACTIVATE CUSTOMER ACCOUNT
 Route::get('/admin/customers', [AdminController::class, 'manageCustomers'])->name('admin.customers');

@@ -48,7 +48,7 @@
 				</a>
 			</li>
 			<li>
-				<a href="#">
+				<a href="{{route('graphs.index')}}">
 					<i class='bx bxs-bar-chart-alt-2'></i>
 					<span class="text">Analytics</span>
 				</a>
